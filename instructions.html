@@ -1,17 +1,20 @@
 
 <h2>Goal:</h2>
 In this task, you need to find all synergestic (and non-synergistic) interactions in the given sentence.
-
-
+<br/>
 <h2>Notes:</h2>
 <ol>
+<li>To mark an interaction be sure to be on the <img src="rel.png"> mode, them choose the relevant label (e.g. SYN1), and press on the participating drugs.</li>
 <li>We don't need you to mark all instances of a given interaction, but the best one.
-e.g. "We wanted to measure the interaction of drugs A and B, and we found that A and B are synergistic, and the synergism of A and B is important". In this case it is sufficient to mark the second or third mention of the synergistic interaction (as the first one is less strong).</li>
-<li>An interaction can occur between more than two drugs, if so notice that we don't need each pair from this group to have a marked interaction, as long as they are all connect the the same graph.
+e.g. "We wanted to measure the interaction of drugs A and B, and we found that A and B are synergistic, and the synergism of A and B is important". In this case it is sufficient to mark the second or third mentions of the synergistic interaction (as the first one is less strong).</li>
+<li>An interaction can occur between more than two drugs, if so notice that we don't need each pair from this group to have a marked interaction, as long as they all connect to the same graph.
 e.g. "Drugs A, B and C are synergistic." connecting A to B and B to C is sufficient, no need to connect A to C.</li>
-<li>The drug marking is optional and may contain mistakes or missing drugs. Use it as a helper/recommender.</li>
-<li>In case you want to connect a span of words as a drug, you can merge the words together by choosing the BLABLA symbol and dragging the mouse to catch the target words.</li>
+<li>The words that are marked as drugs may contain mistakes or more often missing drugs. Use it as a helper/recommender.</li>
+<li>In case you want to use a span of words as a drug, you can merge the words together by pressing the <img src="span.png"> symbol and dragging the mouse to catch the target words. If you see that the merge is not succesful, it might be because one of the words is already marked as a drug, if so you can simply press on that word and remove its marking with the <img src="del.png"> button.</li>
 <li>Each interaction should be marked with a different tag (SYN1, SYN2... for synergestic interactions, and NON1, NON2... for non synergestic interactions).</li>
-<li>As we see it, there are three options that come in mind when reading the sentence. The first is when the interaction is certain. The second is that it is certain that no interaction is occuring. The last is when there is an interaction occuring, but it is unclear whether it is synergistic or not.
+<li>As we see it, there are three ways an interactions is mentioned in the text. The first is when the interaction is certain. The second is that it is certain that no interaction is occuring. The last is when there is an interaction occuring, but it is unclear whether it is synergistic or not.
 Only in the last case you should click on the "Get Full Context" button. In case you did and it helped you to reach the conclusion that indeed the interaction is synergistic, please mark the first checkbox - stating that the context is required.</li>
+<li>Your annotations are saved once every 5 examples. So if you want to undo changes dont wait to long. Alternatively if you want to save and leave you can press Ctrl+s or click on the <img src="save.png"> button.</li>
+<li>Before hitting the big-green-accept button please check the second checkbox if the sentence contained temporal information.</li>
+<li>In case you wish to undo your last accepted or skipped annotation, you can press the big Undo button. In case you want to skip a sentence due to a problem with that setnence simply press on the big skip/ignore button.</li>
 </ol>
