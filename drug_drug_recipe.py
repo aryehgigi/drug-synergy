@@ -61,7 +61,7 @@ def drug_drug_recipe(dataset, source):
         "stream": stream,
         "view_id": "blocks",
         "config": {
-            "labels": ["INTERACTION1", "INTERACTION2", "INTERACTION3", "INTERACTION4"ת "INTERACTION5"],
+            "labels": ["INTERACTION1", "INTERACTION2", "INTERACTION3", "INTERACTION4", "INTERACTION5"],
             "hide_relations_arrow": True,
             "wrap_relations": True,
             "relations_span_labels": ["DRUG"],
