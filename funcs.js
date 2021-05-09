@@ -17,17 +17,22 @@ function proceed() {
 		{"id": "TEMPONO" + rel, "text": "Otherwise, check this if the sentence didn't contain temporal information relevant for " + rel},
 	])});
 	
-	let orig = window.prodigy.config["blocks"];
 	window.prodigy.config["blocks"].push({"view_id": "choice", "text": null, "options": opts})
 
 	window.prodigy.update({
 		"config": {"block": window.prodigy.config["blocks"]}
 	});
+}	
 	
-	document.addEventListener('prodigyanswer', ev => {
-		window.prodigy.update({
-			"config": {"block": orig}
-		});
-		console.log('The answer was: ', ev.answer, orig)
-	})
-}
+document.addEventListener('prodigyanswer', ev => {
+	window.prodigy.config["blocks"] = [
+                {"view_id": "relations"},
+                {"view_id": "html", "html_template": '<button type="button" class="collapsible" onclick="contextClicked()">Click to get full context</button><div class="content" style="display: none;text-align:left;">{{{paragraph}}}</div>', },
+                {"view_id": "html", "html_template": '<button type="button" onclick="proceed()">Proceed to choice questions</button>', },
+        ]
+
+      	window.prodigy.update({
+		"config": {"block": window.prodigy.config["blocks"]}
+	});
+})
+
