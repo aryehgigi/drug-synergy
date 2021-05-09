@@ -16,12 +16,18 @@ function proceed() {
                 {"id": "TEMPO" + rel, "text": "Check this if the sentence contain temporal information relevant for " + rel},
 		{"id": "TEMPONO" + rel, "text": "Otherwise, check this if the sentence didn't contain temporal information relevant for " + rel},
 	])});
-	if ("relations" in window.prodigy.content) {
-		console.log(window.prodigy.content["relations"][0]["label"]);
-	}
+	
+	let orig = window.prodigy.config["blocks"];
 	window.prodigy.config["blocks"].push({"view_id": "choice", "text": null, "options": opts})
 
 	window.prodigy.update({
 		"config": {"block": window.prodigy.config["blocks"]}
 	});
+	
+	document.addEventListener('prodigyanswer', ev => {
+		window.prodigy.update({
+			"config": {"block": orig}
+		});
+		console.log('The answer was: ', ev.answer, orig)
+	})
 }
