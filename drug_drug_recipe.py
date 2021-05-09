@@ -38,7 +38,6 @@ def drug_drug_recipe(dataset, source):
         return [{
                 "text": example['sentence_text'],
                 "paragraph": example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]] + "<b><i>" + example['sentence_text'] + "</i></b>" + example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:],
-                "options": opts,
                 "tokens": [
                     {"text": tok, "start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "id": i, "ws": True if i + 1 != len(example['sentence_text'].split()) else False} # "disabled": not (find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[0] <= i < find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[1]), 
                     for i, tok in enumerate(example['sentence_text'].split())
@@ -78,12 +77,11 @@ def drug_drug_recipe(dataset, source):
             "wrap_relations": True,
             "relations_span_labels": ["DRUG"],
             "choice_style": "multiple",
-            "javascript": open("./funcs.js").read()
+            "javascript": open("./funcs.js").read(),
             "blocks": [
                 {"view_id": "relations"},
                 {"view_id": "html", "html_template": my_template(), },
                 {"view_id": "html", "html_template": my_template2(), },
-                {"view_id": "choice", "text": None, "options": []},
             ]
         }
     }
