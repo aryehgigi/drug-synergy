@@ -64,7 +64,8 @@ def drug_drug_recipe(dataset, source):
     
     def validate_answer(eg):
         selected = eg.get("accept", [])
-        print(selected)
+        for label in set([rel["label"] for rel in eg.get("relations", [])]):
+            assert (("CONTEXT" + label in selected) or ("CONTEXTNO" + label in selected)) and (("TEMPO"  + label in selected) or ("TEMPONO" + label in selected))
     
     return {
         "dataset": dataset,
