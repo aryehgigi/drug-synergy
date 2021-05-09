@@ -9,7 +9,8 @@ function contextClicked() {
 
 function proceed() {
     	let opts = []
-	window.prodigy.content["relations"].forEach((re) => {let rel = re['label']; opts.push(...[
+        let labels = new Set(window.prodigy.content["relations"].map(re => re["label"]));
+	labels.forEach((rel) => {opts.push(...[
         	{"id": "CONTEXT" + rel, "text": "Check this if the context was required for relation " + rel + "?"},
         	{"id": "CONTEXTNO" + rel, "text": "Otherwise, Check this if the context wasn't required for relation " + rel},
                 {"id": "TEMPO" + rel, "text": "Check this if the sentence contain temporal information relevant for " + rel},
