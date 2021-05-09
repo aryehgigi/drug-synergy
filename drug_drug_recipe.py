@@ -7,11 +7,6 @@ import csv
     dataset=("Dataset to save answers to", "positional", None, str),
 )
 def drug_drug_recipe(dataset, source):
-    opts = [
-        {"id": "CONTEXT", "text": "Was the context required?"},
-        {"id": "TEMPO", "text": "Did the sentence contain temporal information?"}
-    ]
-    
     with open("drugs.txt") as f:
         drugs = [l.strip().lower() for l in f.readlines()]
     
@@ -59,24 +54,36 @@ def drug_drug_recipe(dataset, source):
     
     def my_template():
         return '''
-            <button type="button" class="collapsible" onclick="dis = document.getElementsByClassName('content')[0]; if (dis.style.display === 'block') {dis.style.display = 'none'} else {dis.style.display = 'block'};">Click to get full context</button>
+            <button type="button" class="collapsible" onclick="contextClicked()">Click to get full context</button>
             <div class="content" style="display: none;text-align:left;">{{{paragraph}}}</div>
         '''
+    
+    def my_template2():
+        return '''
+            <button type="button" onclick="proceed()">Proceed to choice questions</button>
+        '''
+    
+    def validate_answer(eg):
+        selected = eg.get("accept", [])
+        print(selected)
     
     return {
         "dataset": dataset,
         "stream": stream,
         "view_id": "blocks",
+        "validate_answer": validate_answer,
         "config": {
-            "labels": ["SYN1", "SYN2", "SYN3", "SYN4", "SYN5", "NON1", "NON2", "NON3", "NON4", "NON5"],
+            "labels": ["SYN1", "SYN2", "SYN3", "UNK1", "UNK2", "UNK3", "NOT1", "NOT2", "NOT3"],
             "hide_relations_arrow": True,
             "wrap_relations": True,
             "relations_span_labels": ["DRUG"],
             "choice_style": "multiple",
+            "javascript": open("./funcs.js").read()
             "blocks": [
                 {"view_id": "relations"},
                 {"view_id": "html", "html_template": my_template(), },
-                {"view_id": "choice", "text": None},
+                {"view_id": "html", "html_template": my_template2(), },
+                {"view_id": "choice", "text": None, "options": []},
             ]
         }
     }
