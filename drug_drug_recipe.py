@@ -61,11 +61,17 @@ def drug_drug_recipe(dataset, source):
         return '''
             <button type="button" onclick="proceed()">Proceed to choice questions</button>
         '''
-    
+        
+    def my_template3():
+        with open("radio.html") as f:
+            html_txt = f.read()
+        return html_txt
+            
     def validate_answer(eg):
-        selected = eg.get("accept", [])
+        selected = eg.get("radio", [])
+        print(selected)
         for label in set([rel["label"] for rel in eg.get("relations", [])]):
-            assert (("CONTEXT" + label in selected) or ("CONTEXTNO" + label in selected)) and (("TEMPO"  + label in selected) or ("TEMPONO" + label in selected))
+            assert ((label + "1" in selected) or (label + "0" in selected)) and ((label + "T0" in selected) or (label + "T1" in selected))
     
     return {
         "dataset": dataset,
@@ -73,16 +79,17 @@ def drug_drug_recipe(dataset, source):
         "view_id": "blocks",
         "validate_answer": validate_answer,
         "config": {
-            "labels": ["SYN1", "SYN2", "SYN3", "UNK1", "UNK2", "UNK3", "NOT1", "NOT2", "NOT3"],
+            "labels": ["SYN1", "SYN2", "SYN3", "UNK1", "UNK2", "UNK3", "ANT1", "ANT2", "ANT3"],
             "hide_relations_arrow": True,
             "wrap_relations": True,
             "relations_span_labels": ["DRUG"],
             "choice_style": "multiple",
             "javascript": open("./funcs.js").read(),
+            "global_css": open("./pretty.css").read(),
             "blocks": [
                 {"view_id": "relations"},
                 {"view_id": "html", "html_template": my_template(), },
-                {"view_id": "html", "html_template": my_template2(), },
+                {"view_id": "html", "html_template": my_template3(), },
             ]
         }
     }
