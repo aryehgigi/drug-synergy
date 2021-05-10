@@ -2,7 +2,7 @@
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 55%;
+  width: 100%;
 }
 
 td, th {
@@ -19,6 +19,7 @@ tr:nth-child(even) {
 <p>
 <h2>Goal:</h2>
 In this task, you will need to find interactions and classify them. There are three types of classes to classify: SYNergestic, INTerating (cases that we are sure that there is an interaction but it is unclear whether or not it's synergistic), and lastly NEGative interactinos. As summerized in the following table:
+<br/>
 <table>
   <tr>
     <th>Interaction description</th>
@@ -30,25 +31,25 @@ In this task, you will need to find interactions and classify them. There are th
     <td>Synergistic interaction</td>
     <td>SYN</td>
 	<td>all</td>
-	<td></td>
+	<td>Using drug A followed by B showed an improved reaction than drug A alone.</td>
   </tr>
   <tr>
     <td>Interaction exists but unclear if synergistic</td>
     <td>INT</td>
 	<td>all</td>
-	<td></td>
+	<td>We decided to test the combination of drugs A and B, in treatment of C.</td>
   </tr>
   <tr>
     <td>Not interacting</td>
     <td>-</td>
 	<td>Don't annotate</td>
-	<td></td>
+	<td>The following drugs where tested: A, B, C and D, none of which had a significant effect.</td>
   </tr>
   <tr>
     <td>Interacting in a Negative mennar</td>
     <td>NEG</td>
 	<td>all</td>
-	<td></td>
+	<td>Using drugs A and B together increased mortality.</td>
   </tr>
 
 </table>
