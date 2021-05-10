@@ -1,18 +1,69 @@
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 55%;
+}
+
+td, th {
+  border: 1px solid #000000;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+
 <p>
 <h2>Goal:</h2>
-In this task, you will need to find interactions and classify them. There are three types of classes to classify: SYNergestic, NOT-synergistic (including antagonistic interactinos or interactions that are clearly not synergistic), and lastly UNKnown (including cases where we are not sure if there is an interaction, or cases that we are sure that ther is an interaction but we are not sure what is its polarity).
+In this task, you will need to find interactions and classify them. There are three types of classes to classify: SYNergestic, INTerating (cases that we are sure that there is an interaction but it is unclear whether or not it's synergistic), and lastly NEGative interactinos. As summerized in the following table:
+<table>
+  <tr>
+    <th>Interaction description</th>
+    <th>Tagging label</th>
+    <th>What to annotate</th>
+	<th>Example</th>
+  </tr>
+  <tr>
+    <td>Synergistic interaction</td>
+    <td>SYN</td>
+	<td>all</td>
+	<td></td>
+  </tr>
+  <tr>
+    <td>Interaction exists but unclear if synergistic</td>
+    <td>INT</td>
+	<td>all</td>
+	<td></td>
+  </tr>
+  <tr>
+    <td>Not interacting</td>
+    <td>-</td>
+	<td>Don't annotate</td>
+	<td></td>
+  </tr>
+  <tr>
+    <td>Interacting in a Negative mennar</td>
+    <td>NEG</td>
+	<td>all</td>
+	<td></td>
+  </tr>
+
+</table>
 </p>
 <p>
 <h2>Task guidlines:</h2>
 <ol>
-<li>It is important for us to get all clearcut positive/negative examples (groups SYN and NOT), whereas we expect only few markings (even one per sentence is sufficient) of the UNK group as they will clearly be much more frequant than the previous groups.</li>
-<li> Only for the UNK case, you should click on the "Get Full Context" button and use it to detrmine the type of interaction, if possible.</li>
+<li> Only for the INT cases, you should click on the "Get Full Context" button and use it to detrmine the type of interaction, if possible (otherwise it should indeed be marked as INT).</li>
 <li>An interaction can occur between more than two drugs, if so notice that we don't need each pair from this group to have a marked interaction, as long as they all connect to the same graph.
 e.g. "Drugs A, B and C are synergistic." connecting A to B and B to C is sufficient, no need to connect A to C.</li>
-<li>In case you reach the conclusion that indeed the interaction is synergistic, only using the context, please check the checkbox stating that the context is required (for the specified relation).</li>
+<li>In case you reach the conclusion that the interaction is synergistic, only using the context, please check the button stating that the context is required (for the specified relation).</li>
+<li>If the sentence contained temporal information check the relevant button (for the specified relation).</li>
+<li>A warning would pop up if you didn't fill up the answers for the context and temporal quesions (for the relevant labels).</li>
 <li>The words that are marked as drugs may be partial. Feel free to add more drugs that are not marked in the sentence.</li>
-<li>Each interaction should be marked with a different tag (SYN1, SYN2... for synergestic interactions, and NOT1, NOT2... for non synergestic interactions, and UNK1, UNK2.. for unknown interactions). We beleive that tree of each would be sufficient for a given sentence.</li>
-<li>If the sentence contained temporal information check the relevant checkbox (for the specified relation).</li>
+<li>Each interaction should be marked with a different tag (SYN1, SYN2... for synergestic interactions, and NEG1, NEG2... for negative interactions, and INT1, INT2.. for unclear interactions). We beleive that tree of each should be sufficient for a given sentence.</li>
 </ol>
 </p>
 <p>

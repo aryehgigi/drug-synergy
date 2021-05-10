@@ -11,7 +11,7 @@ var button = document.getElementsByClassName("prodigy-button-accept")[0];
 button.addEventListener('click', function() {
 	console.log("here1", window.prodigy.content)
 	window.prodigy.content["radio"] = [];
-	const labels = ["SYN1", "SYN1T", "SYN2", "SYN2T", "SYN3", "SYN3T", "ANT1", "ANT1T", "ANT2", "ANT2T", "ANT3", "ANT3T", "UNK1", "UNK1T", "UNK2", "UNK2T", "UNK3", "UNK3T"];
+	const labels = ["SYN1", "SYN1T", "SYN2", "SYN2T", "SYN3", "SYN3T", "NEG1", "NEG1T", "NEG2", "NEG2T", "NEG3", "NEG3T", "INT1", "INT1T", "INT2", "INT2T", "INT3", "INT3T"];
 	labels.forEach(label => {
 		rbs = document.querySelectorAll('input[name="' + label + '"]');
 		for (const rb of rbs) {

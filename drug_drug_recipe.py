@@ -56,11 +56,6 @@ def drug_drug_recipe(dataset, source):
             <button type="button" class="collapsible" onclick="contextClicked()">Click to get full context</button>
             <div class="content" style="display: none;text-align:left;">{{{paragraph}}}</div>
         '''
-    
-    def my_template2():
-        return '''
-            <button type="button" onclick="proceed()">Proceed to choice questions</button>
-        '''
         
     def my_template3():
         with open("radio.html") as f:
@@ -71,7 +66,7 @@ def drug_drug_recipe(dataset, source):
         selected = eg.get("radio", [])
         print(selected)
         for label in set([rel["label"] for rel in eg.get("relations", [])]):
-            assert ((label + "1" in selected) or (label + "0" in selected)) and ((label + "T0" in selected) or (label + "T1" in selected))
+            assert ((label + "1" in selected) or (label + "0" in selected)) and ((label + "T0" in selected) or (label + "T1" in selected)), "Before accepting, please answer the questions regarding `context` and `temporal information`, for the relevnat labels,."
     
     return {
         "dataset": dataset,
@@ -79,7 +74,7 @@ def drug_drug_recipe(dataset, source):
         "view_id": "blocks",
         "validate_answer": validate_answer,
         "config": {
-            "labels": ["SYN1", "SYN2", "SYN3", "UNK1", "UNK2", "UNK3", "ANT1", "ANT2", "ANT3"],
+            "labels": ["SYN1", "SYN2", "SYN3", "INT1", "INT2", "INT3", "NEG1", "NEG2", "NEG3"],
             "hide_relations_arrow": True,
             "wrap_relations": True,
             "relations_span_labels": ["DRUG"],
