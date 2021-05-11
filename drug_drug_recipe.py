@@ -2,6 +2,7 @@ import prodigy
 import csv
 
 
+
 @prodigy.recipe(
     "drug-drug-recipe",
     dataset=("Dataset to save answers to", "positional", None, str),
@@ -9,6 +10,12 @@ import csv
 def drug_drug_recipe(dataset, source):
     with open("drugs.txt") as f:
         drugs = [l.strip().lower() for l in f.readlines()]
+    
+    def highlight_drugs(text):
+        out = text
+        for drug in drugs:
+            out = f"<b style='color:Tomato;'><i>{drug}</i></b>".join(out.split(drug))
+        return out
     
     def get_start_offset(e, j):
         return len(" ".join(e['sentence_text'].split()[:j]))
@@ -37,7 +44,7 @@ def drug_drug_recipe(dataset, source):
                 sents.add(line['sentence_text'])
         return [{
                 "text": example['sentence_text'],
-                "paragraph": example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]] + "<b><i>" + example['sentence_text'] + "</i></b>" + example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:],
+                "paragraph": highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " <b style='color:DodgerBlue;'><i>" + example['sentence_text'] + "</i></b>" + highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
                 "tokens": [
                     {"text": tok, "start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "id": i, "ws": True if i + 1 != len(example['sentence_text'].split()) else False} # "disabled": not (find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[0] <= i < find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[1]), 
                     for i, tok in enumerate(example['sentence_text'].split())
@@ -54,7 +61,7 @@ def drug_drug_recipe(dataset, source):
     def my_template():
         return '''
             <button type="button" class="collapsible" onclick="contextClicked()">Click to get full context</button>
-            <div class="content" style="display: none;text-align:left;">{{{paragraph}}}</div>
+            <div class="content" style="word-spacing:3px;display: none;text-align:left;">{{{paragraph}}}</div>
         '''
         
     def my_template3():
