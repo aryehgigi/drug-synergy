@@ -40,11 +40,11 @@ def drug_drug_recipe(dataset, source):
             for line in reader:
                 if (line['sentence_text'] in sents) or (line['d1'].lower() == line['d2'].lower()):
                     continue
-                examples.append({'sentence_text': line['sentence_text'], 'paragraph_text': line['paragraph_text'], 'd1': line['d1'], 'd1_first_index': int(line['d1_first_index']), 'd1_last_index': int(line['d1_last_index']), 'd2': line['d2'], 'd2_first_index': int(line['d2_first_index']), 'd2_last_index': int(line['d2_last_index'])})
+                examples.append({'title': line['title'], 'sentence_text': line['sentence_text'], 'paragraph_text': line['paragraph_text'], 'd1': line['d1'], 'd1_first_index': int(line['d1_first_index']), 'd1_last_index': int(line['d1_last_index']), 'd2': line['d2'], 'd2_first_index': int(line['d2_first_index']), 'd2_last_index': int(line['d2_last_index'])})
                 sents.add(line['sentence_text'])
         return [{
                 "text": example['sentence_text'],
-                "paragraph": highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " <b style='color:DodgerBlue;'><i>" + example['sentence_text'] + "</i></b>" + highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
+                "paragraph": "<h3><u>" + example['title'] + "</u></h3>" + highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " <b style='color:DodgerBlue;'><i>" + example['sentence_text'] + "</i></b>" + highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
                 "tokens": [
                     {"text": tok, "start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "id": i, "ws": True if i + 1 != len(example['sentence_text'].split()) else False} # "disabled": not (find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[0] <= i < find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[1]), 
                     for i, tok in enumerate(example['sentence_text'].split())
