@@ -2,7 +2,6 @@ import prodigy
 import csv
 
 
-
 @prodigy.recipe(
     "drug-drug-recipe",
     dataset=("Dataset to save answers to", "positional", None, str),
