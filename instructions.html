@@ -18,40 +18,41 @@ tr:nth-child(even) {
 
 <p>
 <h2>Goal:</h2>
-<p>In this task, you will need to find interactions and classify them. There are three types of classes to classify: SYNergistic, INTeracting (cases that we are sure that there is an interaction but it is unclear whether or not it's synergistic), and lastly NEGative interactions. As summarized in the following table:<br/></p>
+<p>In this task, you will need to find interactions and classify them. There are three types of classes to classify: POSitive, NEGative and COMBination. As summarized in the following table:<br/></p>
 <table>
   <tr>
     <th>Interaction description</th>
     <th>Tagging label</th>
     <th>What to annotate</th>
-	<th>Example</th>
+	<th>Example(s)</th>
   </tr>
   <tr>
-    <td>Synergistic interaction</td>
-    <td>SYN</td>
+    <td><b>Positive interaction:</b> The sentence (perhaps with context) indicates explicitly that a helpful/useful or even synergistic combination exists between two drugs OR that it is possibly so.</td>
+    <td>POS</td>
 	<td>all</td>
-    <td>(1) <i>These data support the recommendation that <b>ampicillin</b> and <b>chloramphenicol</b> both be used as initial therapy for patients with suspected bacterial meningitis .</i><br/>
-        (2) In the following example the synergistic interaction is implied by the `has been used` phrase: <i><b>Mefloquine</b> ( MQ ) has been used for the treatment of malaria since the mid-1980s , first as monotherapy or as fixed combination with sulfadoxine-pyrimethamine ( MSP ) and since the mid-1990s in combination with <b>artesunate</b> .</i></td>
+    <td>(1) <i>These data support the recommendation that <b>ampicillin</b> plus <b>chloramphenicol</b> be used together as initial therapy for patients with suspected bacterial meningitis .</i><br/>
+        (2) In the following example the synergistic interaction is implied by the `has been used` phrase: <i><b>Mefloquine</b> has been used for the treatment of malaria since the mid-1980s , first as monotherapy or as fixed combination with sulfadoxine-pyrimethamine ( MSP ) and since the mid-1990s in combination with <b>artesunate</b> .</i><br/>
+        (3) Notice in the following example the possibility/hypothesis for a positive interaction: <i><b>Mefloquine</b> has interesting antischistosomal properties , hence it might be an attractive partner drug for combination treatment with <b>praziquantel</b></i></td>
   </tr>
   <tr>
-    <td>Interaction exists (either by experimentation or by evidence) but unclear if synergistic</td>
-    <td>INT</td>
-	<td>all</td>
-    <td>(1) <i>Trials comparing efficacy of melphalan prednisone ( MP ) with <b>MP</b> plus <b>thalidomide</b> in transplant ineligible , elderly patients with multiple myeloma have provided conflicting evidence .</i><br/>
-        (2) <i><b>Mefloquine</b> has interesting antischistosomal properties , hence it might be an attractive partner drug for combination treatment with <b>praziquantel</b></i><br/>
-        (3) <i><b>Mefloquine</b> , tafenoquine , primaquine , methylene blue and lumefantrine , alone or in combination with <b>artesunate</b> , were tested in vitro against Babesia bovis .</i></td>
-  </tr>
-  <tr>
-    <td>Not interacting</td>
-    <td>-</td>
-	<td>Don't annotate</td>
-    <td><i>The present results show that <b>candesartan</b> and <b>amlodipine</b> are equally effective in Japanese elderly patients with high-risk hypertension .</i></td>
-  </tr>
-  <tr>
-    <td>Interacting in a Negative manner</td>
+    <td><b>Negative interaction:</b> The sentence (perhaps with context) indicates explicitly that a combination between the two drugs is either not helpful/useful OR harmful (antagonistic)</td>
     <td>NEG</td>
 	<td>all</td>
-    <td><i>The enhancement of the behavioral effect and the toxicity of <b>methamphetamine</b> may be due to inhibition of the metabolism of methamphetamine by <b>quinine</b> .</i></td>
+    <td>(1) <i>The enhancement of the behavioral effect and the toxicity of <b>methamphetamine</b> may be due to inhibition of the metabolism of methamphetamine by <b>quinine</b> .</i>
+        (2) <i>Clinical studies in healthy volunteers show that the interaction of <b>CANCIDAS</b> with <b>itraconazole</b> does not have any effect .</i></td>
+  </tr>
+  <tr>
+    <td>Combination: The sentence mentions a combination of drugs, but the information (including with context), does not contain sufficient information to decide whether it’s one of the above classes. <br/><b>P.S.</b> (only) in this case you are asked to use the context to get to a final decision.</td>
+    <td>COMB</td>
+	<td>all</td>
+    <td>(1) <i>Trials comparing efficacy of melphalan prednisone ( MP ) with <b>MP</b> plus <b>thalidomide</b> in transplant ineligible , elderly patients with multiple myeloma have provided conflicting evidence .</i><br/>
+        (2) <i><b>Mefloquine</b> , tafenoquine , primaquine , methylene blue and lumefantrine , alone or in combination with <b>artesunate</b> , were tested in vitro against Babesia bovis .</i></td>
+  </tr>
+  <tr>
+    <td><b>Not interacting:</b> The sentence mentions multiple drugs BUT not in the context of a combination (of any kind)</td>
+    <td>[None]</td>
+	<td>Don't annotate</td>
+    <td><i>The present results show that <b>candesartan</b> and <b>amlodipine</b> are equally effective in Japanese elderly patients with high-risk hypertension .</i></td>
   </tr>
 
 </table>
@@ -59,24 +60,24 @@ tr:nth-child(even) {
 <p>
 <h2>Task guidelines:</h2>
 <ol>
-<li> Only for the INT cases, you should click on the "Get Full Context" button and use it to determine the type of interaction, if possible (otherwise it should indeed be marked as INT).</li>
+<li> Only for the COMB cases, you should click on the "Get Full Context" button and use it to determine the type of interaction, if possible (otherwise it should indeed be marked as COMB).</li>
 <li>An interaction can occur between more than two drugs, if so notice that we don't need each pair from this group to have a marked interaction, as long as they all connect to the same graph.
 e.g. "Drugs A, B and C are synergistic." connecting A to B and B to C is sufficient, no need to connect A to C.</li>
 <li>In case you reach the conclusion that the interaction is synergistic, only using the context, please check the button stating that the context is required (for the specified relation).</li>
 <li>If the sentence contained temporal information check the relevant button (for the specified relation).</li>
 <li>A warning would pop up if you didn't fill up the answers for the context and temporal questions (for the relevant labels).</li>
 <li>The words that are marked as drugs may be partial. Feel free to add more drugs that are not marked in the sentence.</li>
-<li>Each interaction should be marked with a different tag (SYN1, SYN2... for synergistic interactions, and NEG1, NEG2... for negative interactions, and INT1, INT2.. for unclear interactions). We believe that tree of each should be sufficient for a given sentence.</li>
+<li>Each interaction should be marked with a different tag (POS1, POS2... for synergistic interactions, and NEG1, NEG2... for negative interactions, and COMB1, COMB2.. for non POS/NEG combinations). We believe that tree of each should be sufficient for a given sentence.</li>
 </ol>
 </p>
 <p>
 <h2>Technical guidelines:</h2>
 <ol>
-<li>To mark an interaction be sure to be on the Assign-Relations mode/button, then choose the relevant label (e.g. SYN1), and press on the participating drugs.</li>
+<li>To mark an interaction be sure to be on the Assign-Relations mode/button, then choose the relevant label (e.g. POS1), and press on the participating drugs.</li>
 <li>In case you want to use a span of words as a drug, you can merge the words together by pressing the Select Spans button and dragging the mouse to catch the target words.</li>
-<li>Your annotations are saved once every 5 examples. So if you want to undo changes don't wait too long. Alternatively if you want to save and leave you can press Ctrl+s or click on the save button.</li>
+<li>Your annotations are saved once every 5 examples. So you can go back up to those 5 if you want to undo changes, otherwise contact us to fix it. Alternatively if you want to save and leave you can press Ctrl+s or click on the save button.</li>
 <li>When done with an annotation, click the big-green-accept button, then you would be fed with the next annotation.</li>
-<li>In case you wish to undo your last accepted or skipped annotation, you can press the big Undo button. In case you want to skip a sentence due to a problem with that sentence simply press on the big skip/ignore button.</li>
+<li>In case you wish to undo your last accepted or skipped annotation, you can press the big Undo button. In case you want to skip a sentence or leave it for a discussion simply press on the big skip/ignore button.</li>
 </ol>
 </p>
 

@@ -43,7 +43,7 @@ def drug_drug_recipe(dataset, source):
                 sents.add(line['sentence_text'])
         return [{
                 "text": example['sentence_text'],
-                "paragraph": "<h3><u>" + example['title'] + "</u></h3>" + highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " <b style='color:DodgerBlue;'><i>" + example['sentence_text'] + "</i></b>" + highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
+                "paragraph": "<h3><u>" + example['title'] + "</u></h3>" + highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " " + " ".join([f"<b style='color:{'MediumOrchid' if tok.lower() in drugs else 'DodgerBlue'};'><i>" + tok + "</i></b>" for i, tok in enumerate(example['sentence_text'].split())]) + highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
                 "tokens": [
                     {"text": tok, "start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "id": i, "ws": True if i + 1 != len(example['sentence_text'].split()) else False} # "disabled": not (find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[0] <= i < find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[1]), 
                     for i, tok in enumerate(example['sentence_text'].split())
@@ -72,7 +72,7 @@ def drug_drug_recipe(dataset, source):
         selected = eg.get("radio", [])
         print(selected)
         for label in set([rel["label"] for rel in eg.get("relations", [])]):
-            assert ((label + "1" in selected) or (label + "0" in selected)) and ((label + "T0" in selected) or (label + "T1" in selected)), "Before accepting, please answer the questions regarding `context` and `temporal information`, for the relevnat labels,."
+            assert ((label + "1" in selected) or (label + "0" in selected)) and ((label + "T0" in selected) or (label + "T1" in selected)), "Before accepting, please answer the questions regarding `context` and `temporal information`, for the relevant labels."
     
     return {
         "dataset": dataset,
@@ -80,7 +80,7 @@ def drug_drug_recipe(dataset, source):
         "view_id": "blocks",
         "validate_answer": validate_answer,
         "config": {
-            "labels": ["SYN1", "SYN2", "SYN3", "INT1", "INT2", "INT3", "NEG1", "NEG2", "NEG3"],
+            "labels": ["POS1", "POS2", "POS3", "NEG1", "NEG2", "NEG3", "COMB1", "COMB2", "COMB3"],
             "hide_relations_arrow": True,
             "wrap_relations": True,
             "relations_span_labels": ["DRUG"],
