@@ -1,5 +1,6 @@
 import prodigy
 import csv
+import json
 
 
 @prodigy.recipe(
@@ -32,15 +33,8 @@ def drug_drug_recipe(dataset, source):
         return idx + c, idx + c + c2 + len(sent.replace(" ", ""))
     
     def load_my_custom_stream(s):
-        examples = []
-        sents = set()
         with open(s) as f:
-            reader = csv.DictReader(f)
-            for line in reader:
-                if (line['sentence_text'] in sents) or (line['d1'].lower() == line['d2'].lower()):
-                    continue
-                examples.append({'title': line['title'], 'sentence_text': line['sentence_text'], 'paragraph_text': line['paragraph_text'], 'd1': line['d1'], 'd1_first_index': int(line['d1_first_index']), 'd1_last_index': int(line['d1_last_index']), 'd2': line['d2'], 'd2_first_index': int(line['d2_first_index']), 'd2_last_index': int(line['d2_last_index'])})
-                sents.add(line['sentence_text'])
+            examples = [json.loads(l.strip()) for l in  f.readlines()]
         return [{
                 "text": example['sentence_text'],
                 "paragraph": "<h3><u>" + example['title'] + "</u></h3>" + highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " " + " ".join([f"<b style='color:{'MediumOrchid' if tok.lower() in drugs else 'DodgerBlue'};'><i>" + tok + "</i></b>" for i, tok in enumerate(example['sentence_text'].split())]) + highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
