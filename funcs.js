@@ -9,7 +9,6 @@ function contextClicked() {
 
 var button = document.getElementsByClassName("prodigy-button-accept")[0];
 button.addEventListener('click', function() {
-	console.log("here1", window.prodigy.content)
 	window.prodigy.content["radio"] = [];
 	const labels = ["POS1", "POS1T", "POS2", "POS2T", "POS3", "POS3T", "NEG1", "NEG1T", "NEG2", "NEG2T", "NEG3", "NEG3T", "COMB1", "COMB1T", "COMB2", "COMB2T", "COMB3", "COMB3T"];
 	labels.forEach(label => {
@@ -23,7 +22,6 @@ button.addEventListener('click', function() {
 })
 
 document.addEventListener('prodigyanswer', ev => {
-	console.log("here2", window.prodigy.content)
 	delete window.prodigy.content["radio"]
 	let btns = document.getElementsByClassName('btn_aryeh')
 	

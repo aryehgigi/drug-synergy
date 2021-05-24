@@ -38,7 +38,7 @@ tr:nth-child(even) {
     <td><b>Negative interaction:</b> The sentence (perhaps with context) indicates explicitly that a combination between the two drugs is either not helpful/useful OR harmful (antagonistic)</td>
     <td>NEG</td>
 	<td>all</td>
-    <td>(1) <i>The enhancement of the behavioral effect and the toxicity of <b>methamphetamine</b> may be due to inhibition of the metabolism of methamphetamine by <b>quinine</b> .</i>
+    <td>(1) <i>The enhancement of the behavioral effect and the toxicity of <b>methamphetamine</b> may be due to inhibition of the metabolism of methamphetamine by <b>quinine</b> .</i><br/>
         (2) <i>Clinical studies in healthy volunteers show that the interaction of <b>CANCIDAS</b> with <b>itraconazole</b> does not have any effect .</i></td>
   </tr>
   <tr>
@@ -60,14 +60,16 @@ tr:nth-child(even) {
 <p>
 <h2>Task guidelines:</h2>
 <ol>
-<li> Only for the COMB cases, you should click on the "Get Full Context" button and use it to determine the type of interaction, if possible (otherwise it should indeed be marked as COMB).</li>
+<li>The accept button should always be used, including cases where no relation was found and no label was added (that is, no POS/COMB/NEG).</li>
+<li>Only in cases where you want to skip a sentence (e.g. when there is an inherent problem with it) or leave it for a future discussion press on the skip/ignore button</li>
+<li>Only for the COMB cases, you should click on the "Get Full Context" button and use it to determine the type of interaction, if possible (otherwise it should indeed be marked as COMB).</li>
 <li>An interaction can occur between more than two drugs, if so notice that we don't need each pair from this group to have a marked interaction, as long as they all connect to the same graph.
 e.g. "Drugs A, B and C are synergistic." connecting A to B and B to C is sufficient, no need to connect A to C.</li>
-<li>In case you reach the conclusion that the interaction is synergistic, only using the context, please check the button stating that the context is required (for the specified relation).</li>
-<li>If the sentence contained temporal information check the relevant button (for the specified relation).</li>
-<li>A warning would pop up if you didn't fill up the answers for the context and temporal questions (for the relevant labels).</li>
-<li>The words that are marked as drugs may be partial. Feel free to add more drugs that are not marked in the sentence.</li>
-<li>Each interaction should be marked with a different tag (POS1, POS2... for synergistic interactions, and NEG1, NEG2... for negative interactions, and COMB1, COMB2.. for non POS/NEG combinations). We believe that tree of each should be sufficient for a given sentence.</li>
+<li>In case you reach the conclusion that the interaction is synergistic, ONLY using the context, please check the button stating that the context is required (for the specified relation).</li>
+<li>If the sentence (or the REQUIRED context) contained temporal information check the relevant button (for the specified relation).</li>
+<li>A warning would pop up if you didn't fill up the answers for the context and temporal questions (for the relevant labels). Notice for the comb cases, you don't need to answer the context question.</li>
+<li>The words that are marked as drugs may be partial. Feel free to add more drugs that are not marked in the sentence. BUT, it is not required to mark a word as drug in order to use it in a relation.</li>
+<li>Each interaction should be marked with a different tag (POS1, POS2... for synergistic interactions, and NEG1, NEG2... for negative interactions, and COMB1, COMB2.. for non POS/NEG combinations). We believe that three of each should be sufficient for a given sentence.</li>
 </ol>
 </p>
 <p>
@@ -77,7 +79,7 @@ e.g. "Drugs A, B and C are synergistic." connecting A to B and B to C is suffici
 <li>In case you want to use a span of words as a drug, you can merge the words together by pressing the Select Spans button and dragging the mouse to catch the target words.</li>
 <li>Your annotations are saved once every 5 examples. So you can go back up to those 5 if you want to undo changes, otherwise contact us to fix it. Alternatively if you want to save and leave you can press Ctrl+s or click on the save button.</li>
 <li>When done with an annotation, click the big-green-accept button, then you would be fed with the next annotation.</li>
-<li>In case you wish to undo your last accepted or skipped annotation, you can press the big Undo button. In case you want to skip a sentence or leave it for a discussion simply press on the big skip/ignore button.</li>
+<li>In case you wish to undo your last accepted or skipped annotation, you can press the big Undo button.</li>
 </ol>
 </p>
 
