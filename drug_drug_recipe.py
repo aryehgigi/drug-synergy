@@ -1,5 +1,4 @@
 import prodigy
-import csv
 import json
 
 
@@ -10,7 +9,7 @@ import json
 def drug_drug_recipe(dataset, source):
     with open("drugs.txt") as f:
         drugs = [l.strip().lower() for l in f.readlines()]
-    
+
     def highlight_drugs(text):
         out = text
         for drug in drugs:
@@ -18,7 +17,7 @@ def drug_drug_recipe(dataset, source):
         return out
     
     def get_start_offset(e, j):
-        return len(" ".join(e['sentence_text'].split()[:j]))
+        return len(" ".join(e['sentence_text'].split()[:j])) + (0 if j == 0 else 1)
     
     def find_sent_in_para(sent, para):
         idx = para.replace(" ", "").find(sent.replace(" ", ""))
