@@ -20,6 +20,7 @@ def drug_drug_recipe(dataset, source):
         return len(" ".join(e['sentence_text'].split()[:j])) + (0 if j == 0 else 1)
     
     def find_sent_in_para(sent, para):
+        para = para.replace("\u2009", " ")
         idx = para.replace(" ", "").find(sent.replace(" ", ""))
         c = 0
         for i in range(idx):
@@ -36,7 +37,10 @@ def drug_drug_recipe(dataset, source):
             examples = [json.loads(l.strip()) for l in  f.readlines()]
         return [{
                 "text": example['sentence_text'],
-                "paragraph": "<h3><u>" + example['title'] + "</u></h3>" + highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " " + " ".join([f"<b style='color:{'MediumOrchid' if tok.lower() in drugs else 'DodgerBlue'};'><i>" + tok + "</i></b>" for i, tok in enumerate(example['sentence_text'].split())]) + highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
+                "paragraph": "<h3><u>" + example['title'] + "</u></h3>" +
+                             highlight_drugs(example['paragraph_text'][:find_sent_in_para(example['sentence_text'], example['paragraph_text'])[0]]) + " " +
+                             " ".join([f"<b style='color:{'MediumOrchid' if tok.lower() in drugs else 'DodgerBlue'};'><i>" + tok + "</i></b>" for i, tok in enumerate(example['sentence_text'].split())]) +
+                             highlight_drugs(example['paragraph_text'][find_sent_in_para(example['sentence_text'], example['paragraph_text'])[1]:]),
                 "tokens": [
                     {"text": tok, "start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "id": i, "ws": True if i + 1 != len(example['sentence_text'].split()) else False} # "disabled": not (find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[0] <= i < find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[1]), 
                     for i, tok in enumerate(example['sentence_text'].split())
