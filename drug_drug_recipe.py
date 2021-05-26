@@ -1,5 +1,6 @@
 import prodigy
 import json
+import re
 
 
 @prodigy.recipe(
@@ -9,11 +10,13 @@ import json
 def drug_drug_recipe(dataset, source):
     with open("drugs.txt") as f:
         drugs = [l.strip().lower() for l in f.readlines()]
+        drugs_c = [re.compile(re.escape(drug), re.IGNORECASE) for drug in drugs]
 
     def highlight_drugs(text):
-        return " ".join(
-            [(f"<b style='color:Tomato;'><i>" + tok + "</i></b>") if tok.lower() in drugs else tok
-             for i, tok in enumerate(text.split())])
+        out = text
+        for drug, drug_c in zip(drugs, drugs_c):
+            out = drug_c.sub(f"<b style='color:Tomato;'><i>{drug}</i></b>", out)
+        return out
 
     def get_start_offset(e, j):
         return len(" ".join(e['sentence_text'].split()[:j])) + (0 if j == 0 else 1)
