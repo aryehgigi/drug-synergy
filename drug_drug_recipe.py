@@ -11,11 +11,10 @@ def drug_drug_recipe(dataset, source):
         drugs = [l.strip().lower() for l in f.readlines()]
 
     def highlight_drugs(text):
-        out = text
-        for drug in drugs:
-            out = f"<b style='color:Tomato;'><i>{drug}</i></b>".join(out.split(drug))
-        return out
-    
+        return " ".join(
+            [(f"<b style='color:Tomato;'><i>" + tok + "</i></b>") if tok.lower() in drugs else tok
+             for i, tok in enumerate(text.split())])
+
     def get_start_offset(e, j):
         return len(" ".join(e['sentence_text'].split()[:j])) + (0 if j == 0 else 1)
     
