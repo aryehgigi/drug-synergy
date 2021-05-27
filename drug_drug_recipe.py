@@ -1,21 +1,25 @@
 import prodigy
 import json
+import re
 
 
 @prodigy.recipe(
     "drug-drug-recipe",
     dataset=("Dataset to save answers to", "positional", None, str),
+    annotators=("amount of annotator", "positional", None, int),
+    annotator_idx=("index of current annotator for data split", "positional", None, int),
 )
-def drug_drug_recipe(dataset, source):
+def drug_drug_recipe(dataset, annotators, annotator_idx, source):
     with open("drugs.txt") as f:
         drugs = [l.strip().lower() for l in f.readlines()]
+        drugs_c = [re.compile(re.escape(drug), re.IGNORECASE) for drug in drugs]
 
     def highlight_drugs(text):
         out = text
-        for drug in drugs:
-            out = f"<b style='color:Tomato;'><i>{drug}</i></b>".join(out.split(drug))
+        for drug, drug_c in zip(drugs, drugs_c):
+            out = drug_c.sub(f"<b style='color:Tomato;'><i>{drug}</i></b>", out)
         return out
-    
+
     def get_start_offset(e, j):
         return len(" ".join(e['sentence_text'].split()[:j])) + (0 if j == 0 else 1)
     
@@ -52,6 +56,7 @@ def drug_drug_recipe(dataset, source):
     
     # Load your own streams from anywhere you want
     stream = load_my_custom_stream(source)
+    stream = stream[annotator_idx * int(len(stream) / annotators): (annotator_idx + 1) * int(len(stream) / annotators)]
     print(len(stream))
     
     def my_template():
@@ -64,7 +69,7 @@ def drug_drug_recipe(dataset, source):
         with open("radio.html") as f:
             html_txt = f.read()
         return html_txt
-            
+
     def validate_answer(eg):
         selected = eg.get("radio", [])
         for label in set([rel["label"] for rel in eg.get("relations", [])]):
