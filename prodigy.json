@@ -1,6 +1,6 @@
 {
   "theme": "basic",
-  "custom_theme": {"buttonSize": 75, "relationHeightWrap": 40, "cardMaxWidth": 1500},
+  "custom_theme": {"buttonSize": 75, "relationHeightWrap": 40, "cardMaxWidth": 1500, "fontPrimary": "Arial"},
   "buttons": ["accept", "ignore"],
   "batch_size": 5,
   "history_size": 5,
