@@ -10,7 +10,7 @@ function contextClicked() {
 var button = document.getElementsByClassName("prodigy-button-accept")[0];
 button.addEventListener('click', function() {
 	window.prodigy.content["radio"] = [];
-	const labels = ["POS1", "POS1T", "POS2", "POS2T", "POS3", "POS3T", "NEG1", "NEG1T", "NEG2", "NEG2T", "NEG3", "NEG3T", "COMB1", "COMB1T", "COMB2", "COMB2T", "COMB3", "COMB3T"];
+	const labels = ["POS1", "POS2", "POS3", "NEG1", "NEG2", "NEG3"];
 	labels.forEach(label => {
 		rbs = document.querySelectorAll('input[name="' + label + '"]');
 		for (const rb of rbs) {

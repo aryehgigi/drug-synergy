@@ -75,7 +75,6 @@ def drug_drug_recipe(dataset, annotators, annotator_idx, source):
         for label in set([rel["label"] for rel in eg.get("relations", [])]):
             if not label.startswith("COMB"):
                 assert (label + "1" in selected) or (label + "0" in selected), "Before accepting, please answer the questions regarding `context` for the relevant labels."
-            assert (label + "T0" in selected) or (label + "T1" in selected), "Before accepting, please answer the questions regarding `temporal information` for the relevant labels."
 
     return {
         "dataset": dataset,
