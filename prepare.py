@@ -5,20 +5,15 @@ import json
 
 # get all examples
 # The file all_with_abstracts was create using: wget on the url of download csv (unlimited results),
-#   of the boolean query Drug1:{drugs} Drug2:{drugs} with the paragraph filter {synergy}
+#   of the boolean query Drug1:{drugs} Drug2:{drugs} with the abstract filter {synergy}
 f = open("../all_with_abstracts.csv")
 r = csv.DictReader(f)
 ls = []
-bad_abs = []
 s = set()
 for i, rr in enumerate(r):
     if i % 40000 == 0:
         print(i)
     if (rr["sentence_text"] in s) or (rr["Drug1"] == rr["Drug2"]):
-        continue
-    # TODO - remove this when the abstract BUG is fixed
-    if rr["abstract"] != rr["paragraph_text"]:
-        bad_abs.append(rr)
         continue
     s.add(rr["sentence_text"])
     ls.append(rr)
