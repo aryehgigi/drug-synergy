@@ -25,7 +25,9 @@ f.close()
 f = open("to_annotate/yosi_input.jsonl")
 yos = [json.loads(y.strip())["sentence_text"] for y in f.readlines()]
 f.close()
-
+f = open("to_annotate/pilot_input.jsonl")
+pilot = [json.loads(y.strip())["sentence_text"] for y in f.readlines()]
+f.close()
 
 # split by cancer
 f2 = open("cancer_list.txt")
@@ -36,14 +38,8 @@ f2.close()
 c = []
 non_c = []
 for l in ls:
-    if l['sentence_text'] in yos:
+    if l['sentence_text'] in yos or l['sentence_text'] in pilot:
         continue
-    l['d1'] = l.pop('Drug1')
-    l['d2'] = l.pop('Drug2')
-    l['d1_first_index'] = l.pop('Drug1_first_index')
-    l['d2_first_index'] = l.pop('Drug2_first_index')
-    l['d1_last_index'] = l.pop('Drug1_last_index')
-    l['d2_last_index'] = l.pop('Drug2_last_index')
     if any(ll in l["title"].lower() for ll in ls2):
         c.append(l)
     else:
@@ -53,17 +49,17 @@ for l in ls:
 # randomize and split
 random.shuffle(c)
 random.shuffle(non_c)
-pilot = c[:100] + non_c[:100]
-random.shuffle(pilot)
-f5 = open("to_annotate/pilot_input.jsonl", "w")
-for aa in pilot:
-    json.dump(aa, f5)
-    _ = f5.write("\n")
+for (part, startc, endc, startnc, endnc) in [("shared", 0, 13, 0, 12), ("split", 13, 63, 12, 62)]:
+    pilot = c[startc: endc] + non_c[startnc: endnc]
+    random.shuffle(pilot)
+    f5 = open(f"to_annotate/pilot_input_{part}.jsonl", "w")
+    for aa in pilot:
+        json.dump(aa, f5)
+        _ = f5.write("\n")
 
-f5.close()
+    f5.close()
 
 
-# TODO - download again after abstract BUG fixes, and validate that the data doesnt contain examples from pilot and Yosi
 # TODO - shuffle the data, and choose example
 # TODO - add distant supervision, and reshuffle
 
