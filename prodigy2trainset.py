@@ -178,7 +178,7 @@ def main(src, annotators=None):
             })
             final.append({'class': k[:-1], 'spans': list(v)})
         with open("examples2.jsonl", "a") as f:
-            json.dump({"sentence": text, "spans": list(spans.values()), "rels": final, "paragraph": para}, f)
+            json.dump({"sentence": text, "spans": list(spans.values()), "rels": final, "paragraph": para, "source": annotated["article_link"]}, f)
             f.write("\n")
     # sort rels_by_anno for alignment:
     sort_rels(rels_by_anno)
