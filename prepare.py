@@ -13,7 +13,7 @@ s = set()
 for i, rr in enumerate(r):
     if i % 40000 == 0:
         print(i)
-    if (rr["sentence_text"] in s) or (rr["Drug1"] == rr["Drug2"]):
+    if (rr["sentence_text"] in s) or (rr["d1"] == rr["d2"]):
         continue
     s.add(rr["sentence_text"])
     ls.append(rr)
@@ -47,17 +47,29 @@ for l in ls:
 
 
 # randomize and split
-random.shuffle(c)
-random.shuffle(non_c)
-for (part, startc, endc, startnc, endnc) in [("shared", 0, 13, 0, 12), ("split", 13, 63, 12, 62)]:
-    pilot = c[startc: endc] + non_c[startnc: endnc]
-    random.shuffle(pilot)
-    f5 = open(f"to_annotate/pilot_input_{part}.jsonl", "w")
-    for aa in pilot:
-        json.dump(aa, f5)
-        _ = f5.write("\n")
+take_c = 13
+take_non_c = 12
+task_type = "shared"
+cycle = 2
 
-    f5.close()
+having_dups = True
+while having_dups:
+    random.shuffle(c)
+    random.shuffle(non_c)
+    if (
+            (len(set(cur_c["title"] for cur_c in c[:take_c])) == take_c) and
+            (len(set(cur_non_c["title"] for cur_non_c in c[:take_non_c])) == take_non_c)
+    ):
+        having_dups = False
+
+pilot = c[:take_c] + non_c[:take_non_c]
+random.shuffle(pilot)
+f5 = open(f"to_annotate/pilot{cycle}_input_{task_type}.jsonl", "w")
+for aa in pilot:
+    json.dump(aa, f5)
+    _ = f5.write("\n")
+
+f5.close()
 
 
 # TODO - shuffle the data, and choose example
