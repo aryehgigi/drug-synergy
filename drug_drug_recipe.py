@@ -39,12 +39,18 @@ def drug_drug_recipe(dataset, annotators, annotator_idx, source):
     def load_my_custom_stream(s):
         with open(s) as f:
             examples = [json.loads(l.strip()) for l in  f.readlines()]
-        return [{
+        out = []
+        for example in examples:
+            sent = " ".join([f"<b style='color:{'MediumOrchid' if tok.lower() in drugs else 'DodgerBlue'};'><i>" + tok + "</i></b>" for i, tok in enumerate(example['sentence_text'].split())])
+            sent_in_para = find_sent_in_para(example['sentence_text'], example['abstract'])
+            if sent_in_para[0] == -1:
+                assert -1 != find_sent_in_para(example['sentence_text'], example['title'])[0]
+                paragraph = "<h3><u>" + sent + "</u></h3>" + highlight_drugs(example['abstract'])
+            else:
+                paragraph = "<h3><u>" + example['title'] + "</u></h3>" + highlight_drugs(example['abstract'][:sent_in_para[0]]) + " " + sent + highlight_drugs(example['abstract'][sent_in_para[1]:])
+            d = {
                 "text": example['sentence_text'],
-                "paragraph": "<h3><u>" + example['title'] + "</u></h3>" +
-                             highlight_drugs(example['abstract'][:find_sent_in_para(example['sentence_text'], example['abstract'])[0]]) + " " +
-                             " ".join([f"<b style='color:{'MediumOrchid' if tok.lower() in drugs else 'DodgerBlue'};'><i>" + tok + "</i></b>" for i, tok in enumerate(example['sentence_text'].split())]) +
-                             highlight_drugs(example['abstract'][find_sent_in_para(example['sentence_text'], example['abstract'])[1]:]),
+                "paragraph": paragraph,
                 "tokens": [
                     {"text": tok, "start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "id": i, "ws": True if i + 1 != len(example['sentence_text'].split()) else False} # "disabled": not (find_sent_words_offsets(example['sentence_text'], example['abstract'])[0] <= i < find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[1]),
                     for i, tok in enumerate(example['sentence_text'].split())
@@ -53,7 +59,9 @@ def drug_drug_recipe(dataset, annotators, annotator_idx, source):
                     {"start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "token_start": i, "token_end": i, "label": "DRUG"} for i, tok in enumerate(example['sentence_text'].split()) if tok.lower() in drugs
                 ],
                 "article_link": example["article_link"],
-        } for example in examples]
+            }
+            out.append(d)
+        return out
     
     # Load your own streams from anywhere you want
     stream = load_my_custom_stream(source)
