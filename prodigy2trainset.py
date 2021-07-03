@@ -16,14 +16,10 @@ class Label(Enum):
 
 labels = {"POS": Label.COMB_POS.value, "NEG": Label.COMB_NEG.value, "COMB": Label.COMB.value}
 labels2 = {"POS": Label.COMB_POS.value, "NEG": Label.NO_COMB.value, "COMB": Label.NO_COMB.value}
-g_anns = ['drug_drug_pilot_shared-yosi', 'drug_drug_pilot_shared-dana_a', 'drug_drug_pilot_shared-dana_n', 'drug_drug_pilot_shared-yuval', 'drug_drug_pilot_shared-yakir', 'drug_drug_pilot_shared-hagit', 'drug_drug_pilot_shared-maytal']
+g_anns = ['yosi', 'shaked', 'dana_a', 'dana_n', 'yuval', 'yakir', 'hagit', 'maytal']
 
 
-def sort_rels(rels_by_anno):
-    for annotator, rels in rels_by_anno.items():
-        for rel in rels:
-            rel['spans'].sort()
-        rels.sort(key=lambda x: (x['example_hash'], str(x['spans'])))
+########################################################## Agreement ########################################################
 
 
 def get_label(rel, metric):
@@ -113,12 +109,12 @@ def calc_rel_agreement(anno1, anno2, metric):
 
 def relation_agreement(rels_by_anno, anns):
     m = [np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns)))]
-    for m_i, metric in enumerate([""]): #["", "ONE_NEG", "RIGOROUS", "RIGOROUS_ONE_NEG"]):
+    for m_i, metric in enumerate([""]): #, "ONE_NEG", "RIGOROUS", "RIGOROUS_ONE_NEG"]):
         for i in range(len(anns)):
             for j in range(len(anns)):
                 if i == j:
                     continue
-                print([{'example_hash': e['example_hash'], 'class': e['class'], 'spans': e['spans']} for e in rels_by_anno[anns[i]]])
+                print([{'radio': e['radio'], 'example_hash': e['example_hash'], 'class': e['class'], 'spans': e['spans']} for e in rels_by_anno[anns[i]]])
                 print([{'example_hash': e['example_hash'], 'class': e['class'], 'spans': e['spans']} for e in rels_by_anno[anns[j]]])
                 vec1, vec2 = calc_rel_agreement(rels_by_anno[anns[i]], rels_by_anno[anns[j]], metric)
                 print(anns[i], vec1)
@@ -127,26 +123,31 @@ def relation_agreement(rels_by_anno, anns):
                 print(f"score: {score}")
                 m[m_i][i, j] = score
     for m_i in m:
-        for l in m_i:
-            print([f"{ll:.4f}" for ll in l])
+        print(f'{"":7}', [f'{ann.split("-")[-1]:7}' for ann in anns])
+        for i, l in enumerate(m_i):
+            print(f'{anns[i].split("-")[-1]:7}', [f"{ll:7.4f}" for ll in l])
         print()
 
 
-def main(src, annotators=None):
+########################################################## process input ########################################################
+
+
+def sort_rels(rels_by_anno):
+    for annotator, rels in rels_by_anno.items():
+        for rel in rels:
+            rel['spans'].sort()
+        rels.sort(key=lambda x: (x['example_hash'], str(x['spans'])))
+
+
+def process_prodigy_output(src, annotators):
+    real_annos = lambda name: name.split("-")[-1]
     rels_by_anno = defaultdict(list)
-    extra_spans = dict()
-    skipped = dict()
+    examples_out = ""
     with open(src) as f:
         ls = f.readlines()
     for line in ls:
         annotated = json.loads(line.strip())
-        if (annotated["answer"] != "accept") or (annotators and not any([annotated["_session_id"].endswith(annotator) for annotator in annotators])):
-            # # for entity agreement
-            # k = str(hash(annotated["text"]))
-            # if k in skipped:
-            #     skipped[k].append(annotated["_session_id"])
-            # else:
-            #     skipped[k] = [annotated["_session_id"]]
+        if (annotated["answer"] != "accept") or (annotators and not any([real_annos(annotated["_session_id"]) == annotator for annotator in annotators])):
             continue
         para = re.sub("<[huib/].*?>", "", re.sub("</h3>", " ", annotated["paragraph"]))
         text = annotated["text"]
@@ -163,72 +164,128 @@ def main(src, annotators=None):
                         {** {'span_id': len(spans), 'text': annotated["text"][rel[span_type]['start']:rel[span_type]['end']]},
                          ** {k: v for k, v in rel[span_type].items() if k != 'label'}}
                     span = spans[str(rel[span_type])]
-                    # for entity agreement
-                    k = str((hash(annotated["text"]), span["token_start"], span["token_end"]))
-                    if k in extra_spans:
-                        extra_spans[k].append(annotated["_session_id"])
-                    else:
-                        extra_spans[k] = [annotated["_session_id"]]
                 rels[rel['label']].add(span["span_id"])
 
         final = []
         for k, v in rels.items():
-            rels_by_anno[annotated["_session_id"]].append({'example_hash': hash(annotated['text']), 'text': annotated['text'], 'class': k[:-1], 'spans':
-                [(span["token_start"], span["token_end"]) for span in spans.values() if span["span_id"] in list(v)]
+            rels_by_anno[real_annos(annotated["_session_id"])].append({
+                'example_hash': hash(annotated['text']),
+                'class': k[:-1],
+                'class_orig': k,
+                'spans': [(span["token_start"], span["token_end"]) for span in spans.values() if span["span_id"] in list(v)],
+                'radio': [x for x in annotated['radio'] if "T" not in x],
+                'text': annotated['text'],
+                "paragraph": para
             })
             final.append({'class': k[:-1], 'spans': list(v)})
-        with open("examples2.jsonl", "a") as f:
-            json.dump({"sentence": text, "spans": list(spans.values()), "rels": final, "paragraph": para, "source": annotated["article_link"]}, f)
-            f.write("\n")
+
+        examples_out += json.dumps({"sentence": text, "spans": list(spans.values()), "rels": final, "paragraph": para, "source": annotated["article_link"]}) + "\n"
     # sort rels_by_anno for alignment:
     sort_rels(rels_by_anno)
 
-    return rels_by_anno
+    return rels_by_anno, examples_out
 
-    # entity agreement
-    # if False:
-    #     krip = []
-    #     for i in extra_spans:
-    #         krip.append([])
-    #     for i, (k, v) in enumerate(extra_spans.items()):
-    #         for ann in anns:
-    #             if ann in v:
-    #                 krip[i].append(1)
-    #             elif k.split(",")[0][1:] in skipped and ann in skipped[k.split(",")[0][1:]]:
-    #                 krip[i].append(0)
-    #             else:
-    #                 krip[i].append(2)
-    #     print(krip)
+
+########################################################## HTML ########################################################
+
+
+def label_text(spans, text, lines_to_add):
+    classes = defaultdict(list)
+    for ann in spans:
+        for span in ann["spans"]:
+            for i in range(span[0], span[1] + 1):
+                classes[i].append(ann["class_orig"][0] + ann["class_orig"][-1])
+    data_anno_id = 0
+    bunch_of_words = []
+    for i, word in enumerate(text.split()):
+        bunch_of_words.append(word)
+        if (classes.get(i, None) != classes.get(i + 1, None)) or ((i + 1) == len(text.split())):
+            if classes.get(i, None):
+                lines_to_add.append(f' <span class="marker" data-anno-id="{data_anno_id}" data-anno-label="{"/".join(classes[i])}">{" ".join(bunch_of_words)}</span> ')
+                data_anno_id += 1
+            else:
+                lines_to_add.append(" " + " ".join(bunch_of_words) + " ")
+            bunch_of_words = []
 
 
 def make_html(rels_by_anno):
     ls2 = []
-    for i, (annotator1, annotation1) in enumerate(list(rels_by_anno.items())[:-1]):
-        for annotator2, annotation2 in list(rels_by_anno.items())[i + 1:]:
-            ls2.append(f'''
-                <button type="button" class="collapsible">{annotator1}-{annotator2}</button>
-                <div class="content">
-                    <p>{annotation1}</p>
-                    <p>{annotation2}</p>
-                </div>''')
+    # for i, (annotator1, annotations1) in enumerate(list(rels_by_anno.items())[:-1]):
+    #     for annotator2, annotations2 in list(rels_by_anno.items())[i + 1:]:
+    annotator1 = "yosi"
+    annotations1 = rels_by_anno[annotator1]
+    for annotator2, annotations2 in rels_by_anno.items():
+        if annotator2 == annotator1:
+            continue
+        ls2.append(f'''<button type="button" class="collapsible">{annotator1} - {annotator2}</button>
+        <div>''')
+        spans1 = []
+        for i, annotation1 in enumerate(annotations1):
+            spans1.append(annotation1)
+            if (i + 1 == len(annotations1)) or (annotation1["example_hash"] != annotations1[i + 1]["example_hash"]):
+                spans2 = []
+                for annotation2 in annotations2:
+                    if annotation2["example_hash"] == annotation1["example_hash"]:
+                        spans2.append(annotation2)
+                if str([(span["spans"], span["class_orig"]) for span in spans1]) == str([(span["spans"], span["class_orig"]) for span in spans2]):
+                    spans1 = []
+                    continue
+                ls2.append('''<div class="supercontainer">''')
+                ls2.append(f'''<div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
+                label_text(spans1, annotation1["text"], ls2)
+                ls2.append('''</div></div><div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
+                label_text(spans2, annotation1["text"], ls2)
+                ls2.append('''</div></div>''')
+                ls2.append(
+                    f'''<button type="button" class="collapsible">Click to see abstract</button><div style="display:none">{annotation1["paragraph"]}</div>''')
+                ls2.append('''</div>''')
+                spans1 = []
+        ls2.append('''</div>''')
+    ls_pre = []
+    ls_post = []
+    move_to_post = False
     with open("explain.html") as f:
-        ls = f.readlines()
+        for l in  f.readlines():
+            if l.startswith("#replace_here"):
+                move_to_post = True
+                continue
+            if move_to_post:
+                ls_post.append(l)
+            else:
+                ls_pre.append(l)
     with open("explain_edited.html", "w") as f:
-        f.writelines(ls)
+        f.writelines(ls_pre)
         f.writelines(ls2)
+        f.writelines(ls_post)
 
+
+########################################################## export dataset ########################################################
+
+
+def export_dataset(examples):
+    with open("examples3.jsonl", "a") as f:
+        f.write(examples)
+
+
+########################################################## Main ########################################################
 
 
 if __name__ == "__main__":
     rels_by_anno = []
-    if len(sys.argv) == 2:
-        rels_by_anno = main(sys.argv[1])
-    elif len(sys.argv) == 3:
-        rels_by_anno = main(sys.argv[1], sys.argv[2].split())
+    examples_out = ""
+    annotators = sys.argv[2].split() if len(sys.argv) == 3 else g_anns
+
+    # process annotations
+    rels_by_anno, examples_out = process_prodigy_output(sys.argv[1], annotators)
 
     # compute agreement
-    #relation_agreement(rels_by_anno, [g_anns[0], g_anns[5]])
+    relation_agreement(rels_by_anno, annotators)
 
+    # prepare disagreement html
     make_html(rels_by_anno)
+
+    # export dataset for model
+    export_dataset(examples_out)
+
 
 
