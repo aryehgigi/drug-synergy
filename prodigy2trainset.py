@@ -4,7 +4,12 @@ import json
 import re
 from enum import Enum
 import numpy as np
+from nltk import agreement
 from sklearn.metrics import cohen_kappa_score
+from statsmodels.stats.inter_rater import fleiss_kappa
+
+
+INCLUDE_NO_COMBS = False
 
 
 class Label(Enum):
@@ -14,8 +19,8 @@ class Label(Enum):
     COMB_POS = 3
 
 
-labels = {"POS": Label.COMB_POS.value, "NEG": Label.COMB_NEG.value, "COMB": Label.COMB.value}
-labels2 = {"POS": Label.COMB_POS.value, "NEG": Label.NO_COMB.value, "COMB": Label.NO_COMB.value}
+labels = {"POS": Label.COMB_POS.value, "NEG": Label.COMB_NEG.value, "COMB": Label.COMB.value, "NO_COMB": Label.NO_COMB.value}
+labels2 = {"POS": Label.COMB_POS.value, "NEG": Label.NO_COMB.value, "COMB": Label.NO_COMB.value, "NO_COMB": Label.NO_COMB.value}
 g_anns = ['yosi', 'shaked', 'dana_a', 'dana_n', 'yuval', 'yakir', 'hagit', 'maytal']
 
 
@@ -109,7 +114,7 @@ def calc_rel_agreement(anno1, anno2, metric):
 
 def relation_agreement(rels_by_anno, anns):
     m = [np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns)))]
-    for m_i, metric in enumerate([""]): #, "ONE_NEG", "RIGOROUS", "RIGOROUS_ONE_NEG"]):
+    for m_i, metric in enumerate(["", "ONE_NEG"]): #, "ONE_NEG", "RIGOROUS", "RIGOROUS_ONE_NEG"]):
         for i in range(len(anns)):
             for j in range(len(anns)):
                 if i == j:
@@ -119,7 +124,11 @@ def relation_agreement(rels_by_anno, anns):
                 vec1, vec2 = calc_rel_agreement(rels_by_anno[anns[i]], rels_by_anno[anns[j]], metric)
                 print(anns[i], vec1)
                 print(anns[j], vec2)
-                score = cohen_kappa_score(vec1, vec2)
+                # score = cohen_kappa_score(vec1, vec2)
+                # use Krippendorff’s alpha
+                formatted_codes = [[1, i, vec1[i]] for i in range(len(vec1))] + [[2, i, vec2[i]] for i in range(len(vec2))]
+                ratingtask = agreement.AnnotationTask(data=formatted_codes)
+                score = ratingtask.alpha()
                 print(f"score: {score}")
                 m[m_i][i, j] = score
     for m_i in m:
@@ -139,7 +148,7 @@ def sort_rels(rels_by_anno):
         rels.sort(key=lambda x: (x['example_hash'], str(x['spans'])))
 
 
-def process_prodigy_output(src, annotators):
+def process_prodigy_output(src, annotators, include_no_combs):
     real_annos = lambda name: name.split("-")[-1]
     rels_by_anno = defaultdict(list)
     examples_out = ""
@@ -165,6 +174,10 @@ def process_prodigy_output(src, annotators):
                          ** {k: v for k, v in rel[span_type].items() if k != 'label'}}
                     span = spans[str(rel[span_type])]
                 rels[rel['label']].add(span["span_id"])
+        if include_no_combs:
+            if len(annotated["relations"]) == 0:
+                for span in spans.values():
+                    rels["NO_COMB1"].add(span["span_id"])
 
         final = []
         for k, v in rels.items():
@@ -208,12 +221,26 @@ def label_text(spans, text, lines_to_add):
             bunch_of_words = []
 
 
+def label_container(spans1, spans2, text, para, lines_to_add):
+    lines_to_add.append('''<div class="supercontainer">''')
+    lines_to_add.append(f'''<div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
+    label_text(spans1, text, lines_to_add)
+    lines_to_add.append(
+        '''</div></div><div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
+    label_text(spans2, text, lines_to_add)
+    lines_to_add.append('''</div></div>''')
+    lines_to_add.append(
+        f'''<button type="button" class="collapsible" style="background-color:#eee">Click to see abstract</button><div style="display:none">{para}</div>''')
+    lines_to_add.append('''</div>''')
+
+
 def make_html(rels_by_anno):
     ls2 = []
     # for i, (annotator1, annotations1) in enumerate(list(rels_by_anno.items())[:-1]):
     #     for annotator2, annotations2 in list(rels_by_anno.items())[i + 1:]:
     annotator1 = "yosi"
     annotations1 = rels_by_anno[annotator1]
+    visited = set()
     for annotator2, annotations2 in rels_by_anno.items():
         if annotator2 == annotator1:
             continue
@@ -224,28 +251,29 @@ def make_html(rels_by_anno):
             spans1.append(annotation1)
             if (i + 1 == len(annotations1)) or (annotation1["example_hash"] != annotations1[i + 1]["example_hash"]):
                 spans2 = []
+                visited.add(annotation1["example_hash"])
                 for annotation2 in annotations2:
                     if annotation2["example_hash"] == annotation1["example_hash"]:
                         spans2.append(annotation2)
                 if str([(span["spans"], span["class_orig"]) for span in spans1]) == str([(span["spans"], span["class_orig"]) for span in spans2]):
                     spans1 = []
                     continue
-                ls2.append('''<div class="supercontainer">''')
-                ls2.append(f'''<div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
-                label_text(spans1, annotation1["text"], ls2)
-                ls2.append('''</div></div><div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
-                label_text(spans2, annotation1["text"], ls2)
-                ls2.append('''</div></div>''')
-                ls2.append(
-                    f'''<button type="button" class="collapsible">Click to see abstract</button><div style="display:none">{annotation1["paragraph"]}</div>''')
-                ls2.append('''</div>''')
+                label_container(spans1, spans2, annotation1["text"], annotation1["paragraph"], ls2)
                 spans1 = []
+        spans2 = []
+        for i, annotation2 in enumerate(annotations2):
+            if annotation2["example_hash"] in visited:
+                continue
+            spans2.append(annotation2)
+            if (i + 1 == len(annotations2)) or (annotation2["example_hash"] != annotations2[i + 1]["example_hash"]):
+                label_container([], spans2, annotation2["text"], annotation2["paragraph"], ls2)
+                spans2 = []
         ls2.append('''</div>''')
     ls_pre = []
     ls_post = []
     move_to_post = False
     with open("explain.html") as f:
-        for l in  f.readlines():
+        for l in f.readlines():
             if l.startswith("#replace_here"):
                 move_to_post = True
                 continue
@@ -276,7 +304,7 @@ if __name__ == "__main__":
     annotators = sys.argv[2].split() if len(sys.argv) == 3 else g_anns
 
     # process annotations
-    rels_by_anno, examples_out = process_prodigy_output(sys.argv[1], annotators)
+    rels_by_anno, examples_out = process_prodigy_output(sys.argv[1], annotators, INCLUDE_NO_COMBS)
 
     # compute agreement
     relation_agreement(rels_by_anno, annotators)
