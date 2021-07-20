@@ -292,7 +292,7 @@ def make_html(rels_by_anno):
     ls_pre = []
     ls_post = []
     move_to_post = False
-    with open("explain.html") as f:
+    with open("explains/explain.html") as f:
         for l in f.readlines():
             if l.startswith("#replace_here"):
                 move_to_post = True
@@ -301,7 +301,7 @@ def make_html(rels_by_anno):
                 ls_post.append(l)
             else:
                 ls_pre.append(l)
-    with open("explain_edited.html", "w") as f:
+    with open("explains/explain_edited.html", "w") as f:
         f.writelines(ls_pre)
         f.writelines(ls2)
         f.writelines(ls_post)
@@ -342,7 +342,7 @@ def make_hillels_html(rels_by_nary, rels_by_relcount):
     ls_pre = []
     ls_post = []
     move_to_post = False
-    with open("explain.html") as f:
+    with open("explains/explain.html") as f:
         for l in f.readlines():
             if l.startswith("#replace_here"):
                 move_to_post = True
@@ -351,7 +351,7 @@ def make_hillels_html(rels_by_nary, rels_by_relcount):
                 ls_post.append(l)
             else:
                 ls_pre.append(l)
-    with open("explain_by_nary.html", "w") as f:
+    with open("explains/explain_by_nary.html", "w") as f:
         f.writelines(ls_pre)
         f.writelines(lll)
         f.writelines(ls2)
@@ -377,7 +377,7 @@ def make_hillels_html(rels_by_nary, rels_by_relcount):
     ls_pre = []
     ls_post = []
     move_to_post = False
-    with open("explain.html") as f:
+    with open("explains/explain.html") as f:
         for l in f.readlines():
             if l.startswith("#replace_here"):
                 move_to_post = True
@@ -386,7 +386,7 @@ def make_hillels_html(rels_by_nary, rels_by_relcount):
                 ls_post.append(l)
             else:
                 ls_pre.append(l)
-    with open("explain_by_rel_count.html", "w") as f:
+    with open("explains/explain_by_rel_count.html", "w") as f:
         f.writelines(ls_pre)
         f.writelines(lll)
         f.writelines(ls2)
