@@ -241,6 +241,8 @@ def label_text(spans, text, lines_to_add):
 
 
 def label_container(spans1, spans2, text, para, lines_to_add, annotator1, annotator2):
+    if len([span for span in spans1 + spans2 if not span["class"].startswith("NO_COMB")]) == 0:
+        return
     s = max(len(annotator2), len(annotator1))
     lines_to_add.append('''<div class="supercontainer"><div class="midcontainer">''')
     lines_to_add.append(f'''<div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
@@ -397,7 +399,7 @@ def make_hillels_html(rels_by_nary, rels_by_relcount):
 
 
 def export_dataset(examples, i):
-    with open(f"examples{i}.jsonl", "a") as f:
+    with open(f"converted2model/examples{i}.jsonl", "a") as f:
         f.write(examples)
 
 
@@ -408,9 +410,9 @@ if __name__ == "__main__":
     rels_by_anno = []
     examples_out = ""
     annotators = sys.argv[2].split()
-    do_agreement = bool(sys.argv[3])
-    do_agreement_html = bool(sys.argv[4])
-    do_explain = bool(sys.argv[5])
+    do_agreement = bool(int(sys.argv[3]))
+    do_agreement_html = bool(int(sys.argv[4]))
+    do_explain = bool(int(sys.argv[5]))
     export_idx = int(sys.argv[6])
 
     if do_agreement or do_agreement_html:
