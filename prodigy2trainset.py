@@ -42,6 +42,7 @@ def process_prodigy_output(src, annotators, include_no_combs):
                 **{k: v for k, v in span.items() if k != 'label'}}
             for i, span in enumerate(annotated['spans'])}
         rels = defaultdict(set)
+        used_spans = []
         for rel in annotated["relations"]:
             for span_type in ['head_span', 'child_span']:
                 span = spans.get(str(rel[span_type]), None)
@@ -51,9 +52,10 @@ def process_prodigy_output(src, annotators, include_no_combs):
                          ** {k: v for k, v in rel[span_type].items() if k != 'label'}}
                     span = spans[str(rel[span_type])]
                 rels[rel['label']].add(span["span_id"])
+                used_spans.append(span["span_id"])
         if include_no_combs:
-            if len(annotated["relations"]) == 0:
-                for span in spans.values():
+            for span in spans.values():
+                if span["span_id"] not in used_spans:
                     rels["NO_COMB1"].add(span["span_id"])
 
         final = []
@@ -91,14 +93,14 @@ def process_prodigy_output(src, annotators, include_no_combs):
 ########################################################## Yosi's HTML ########################################################
 
 
-def label_text(spans, text, lines_to_add):
+def label_text(spans, text, lines_to_add, show_no_comb=False):
     classes = defaultdict(list)
     for ann in spans:
-        if ann["class"].startswith("NO_COMB"):
+        if ann["class"].startswith("NO_COMB") and not show_no_comb:
             continue
         for span in ann["spans"]:
             for i in range(span[0], span[1] + 1):
-                classes[i].append(ann["class_orig"][0] + ann["class_orig"][-1])
+                classes[i].append((ann["class_orig"][0] if not ann["class_orig"].startswith("NO_COMB") else "O") + ann["class_orig"][-1])
     data_anno_id = 0
     bunch_of_words = []
     for i, word in enumerate(text.split()):
@@ -195,7 +197,27 @@ def hillel_label_container(spans1, text, para, lines_to_add, annotator):
     lines_to_add.append('''</div></div>''')
 
 
-def make_hillels_html(rels_by_nary, rels_by_relcount):
+def no_comb_error_analysis_label_container(spans1, text, para, lines_to_add, annotator):
+    found_no_comb = False
+    found_other = False
+    for ann in spans1:
+        if ann["class"].startswith("NO_COMB"):
+            found_no_comb = True
+        if not ann["class"].startswith("NO_COMB"):
+            found_other = True
+    if not (found_no_comb and found_other):
+        return
+    lines_to_add.append('''<div class="supercontainer"><div class="midcontainer">''')
+    lines_to_add.append(f'''<div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
+    lines_to_add.append(f"<b>{annotator.capitalize()}:</b> ")
+    label_text(spans1, text, lines_to_add, show_no_comb=True)
+    lines_to_add.append('''</div></div></div><div class="abstractcontainer">''')
+    lines_to_add.append(
+        f'''<button type="button" class="collapsible" style="background-color:#eee">Click to see abstract</button><div style="display:none">{para}</div>''')
+    lines_to_add.append('''</div></div>''')
+
+
+def make_hillels_html(rels_by_nary, rels_by_relcount, func):
     ls2 = []
     lll = []
     for ii, (nary, annotations) in enumerate(sorted(rels_by_nary.items(), reverse=True)):
@@ -205,7 +227,7 @@ def make_hillels_html(rels_by_nary, rels_by_relcount):
         for i, annotation1 in enumerate(annotations):
             spans1.append(annotation1)
             if (i + 1 == len(annotations)) or (annotation1["example_hash"] != annotations[i + 1]["example_hash"]):
-                hillel_label_container(spans1, annotation1["text"], annotation1["paragraph"], ls3, annotation1["annotator"])
+                func(spans1, annotation1["text"], annotation1["paragraph"], ls3, annotation1["annotator"])
                 spans1 = []
                 iii += 1
         lll.append(f'<a href="#coll{ii}">{nary}-ary drug combinations: found {iii}</a><br/>')
@@ -240,7 +262,7 @@ def make_hillels_html(rels_by_nary, rels_by_relcount):
         for i, annotation1 in enumerate(annotations):
             spans1.append(annotation1)
             if (i + 1 == len(annotations)) or (annotation1["example_hash"] != annotations[i + 1]["example_hash"]):
-                hillel_label_container(spans1, annotation1["text"], annotation1["paragraph"], ls3, annotation1["annotator"])
+                func(spans1, annotation1["text"], annotation1["paragraph"], ls3, annotation1["annotator"])
                 spans1 = []
                 iii += 1
         lll.append(f'<a href="#coll{ii}">sentences with {relcount} relations: found {iii}</a><br/>')
@@ -287,9 +309,10 @@ if __name__ == "__main__":
     do_agreement = bool(int(sys.argv[3]))
     do_agreement_html = bool(int(sys.argv[4]))
     do_explain = bool(int(sys.argv[5]))
-    export_idx = int(sys.argv[6])
+    do_err_analysis_no_comb = bool(int(sys.argv[6]))
+    export_idx = int(sys.argv[7])
 
-    if do_agreement or do_agreement_html:
+    if do_agreement or do_agreement_html or do_err_analysis_no_comb:
         include_no_combs = True
     else:
         include_no_combs = False
@@ -305,7 +328,11 @@ if __name__ == "__main__":
     if do_agreement_html:
         make_html(rels_by_anno)
     if do_explain:
-        make_hillels_html(rels_by_nary, rels_by_relcount)
+        make_hillels_html(rels_by_nary, rels_by_relcount, hillel_label_container)
+    # here i check sentences that have both no comb and some other combination
+    #   specifically interested with many rels in same sent (due to the max 3 limit)
+    if do_err_analysis_no_comb:
+        make_hillels_html(rels_by_nary, rels_by_relcount, no_comb_error_analysis_label_container)
 
     # export dataset for model
     if export_idx:
