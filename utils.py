@@ -61,13 +61,14 @@ def create_vectors(gold, test, unify_negs):
 def f_from_p_r(v, labeled=False):
     positives = len([g for (g, _, _) in v if g != Label.NO_COMB.value])
     tp = 0
-    fp = 0
+    predicted = 0
     for g, t, s in v:
         if ((g != 0) and (t != 0)) and ((not labeled) or (g == t)):
             tp += s
+            predicted += 1
         elif g == 0 and t != 0:
-            fp += 1
-    p = tp / (tp + fp)
+            predicted += 1
+    p = tp / predicted
     r = tp / positives
     return (2 * p * r) / (p + r)
 
