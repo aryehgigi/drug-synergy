@@ -282,6 +282,8 @@ if __name__ == "__main__":
     rels_by_anno = []
     examples_out = ""
     annotators = sys.argv[2].split()
+    if len(annotators) == 0:
+        annotators = g_anns
     do_agreement = bool(int(sys.argv[3]))
     do_agreement_html = bool(int(sys.argv[4]))
     do_explain = bool(int(sys.argv[5]))
