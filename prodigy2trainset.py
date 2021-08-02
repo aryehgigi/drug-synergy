@@ -312,7 +312,7 @@ if __name__ == "__main__":
     do_err_analysis_no_comb = bool(int(sys.argv[6]))
     export_idx = int(sys.argv[7])
 
-    if do_agreement or do_agreement_html or do_err_analysis_no_comb:
+    if do_agreement_html or do_err_analysis_no_comb:
         include_no_combs = True
     else:
         include_no_combs = False
