@@ -526,6 +526,7 @@ Ciprofibrate
 Ciprofloxacin
 Cisapride
 Cisatracurium
+Cisplatin
 Citalopram
 Citicoline
 Citiolone
