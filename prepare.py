@@ -83,26 +83,6 @@ def get_data_to_annotate(candidate_data, already_annotated, cancer_list, take_c,
 
 
 if __name__ == "__main__":
-    # get all examples
-    # The file all_with_abstracts was created using: wget on the url of download csv (unlimited results),
-    #   of the boolean query Drug1:{drugs} Drug2:{drugs} with the abstract filter {synergy}
-    # Notes:
-    #   - remember to take the newest version as the drug list might be updated
-    #   - the download csv has an option now to choose fields, so notice to choose:
-    #       abstract, paragraph_text, article_link, sentence_text, title, capture_indices
-    ls = get_examples("../all_with_abstracts.csv")
-
-    # get distant supervision examples
-    # The file distant_supervision.csv was created using: wget on the url of download csv (unlimited results),
-    #   of the boolean query Drug1:{combos.1} Drug2:{combos.2}
-    ds = clear_ds(get_examples("../distant_supervision.csv"))
-
-    # remove examples already annotated
-    already_annotated = get_already_annotated()
-
-    # split by cancer
-    cancer_list = get_cancer_list()
-
     # read user arguments
     take_c = int(sys.argv[1])  # e.g 13
     take_non_c = int(sys.argv[2])  # e.g. 12
@@ -111,12 +91,37 @@ if __name__ == "__main__":
     task_type = sys.argv[5]  # e.g. split or shared
     cycle = int(sys.argv[6])  # e.g. 4
 
+    # remove examples already annotated
+    already_annotated = get_already_annotated()
+
+    # split by cancer
+    cancer_list = get_cancer_list()
+
+    # get all examples
+    # The file all_with_abstracts was created using: wget on the url of download csv (unlimited results),
+    #   of the boolean query d1:{drugs} d2:{drugs} with the abstract filter {synergy}
+    # Notes:
+    #   - remember to take the newest version as the drug list might be updated
+    #   - the download csv has an option now to choose fields, so notice to choose:
+    #       abstract, paragraph_text, article_link, sentence_text, title, capture_indices
+    chosen_data_regular = []
+    if take_c_ds or take_non_c_ds:
+        ls = get_examples("../all_with_abstracts.csv")
+        chosen_data_regular = get_data_to_annotate(ls, already_annotated, cancer_list, take_c, take_non_c)
+
+    # get distant supervision examples
+    # The file distant_supervision.csv was created using: wget on the url of download csv (unlimited results),
+    #   of the boolean query d1:{combos.1} d2:{combos.2}
+    chosen_data_ds = []
+    if take_c or take_non_c:
+        ds = clear_ds(get_examples("../distant_supervision.csv"))
+        chosen_data_ds = get_data_to_annotate(ds, already_annotated, cancer_list, take_c_ds, take_non_c_ds)
+
     # filter, randomize and split
-    chosen_data = \
-        get_data_to_annotate(ls, already_annotated, cancer_list, take_c, take_non_c) + \
-        get_data_to_annotate(ds, already_annotated, cancer_list, take_c_ds, take_non_c_ds)
+    chosen_data = chosen_data_regular + chosen_data_ds
     random.shuffle(chosen_data)
 
+    # output
     with open(f"to_annotate/pilot{cycle}_input_{task_type}.jsonl", "w") as f:
         for aa in chosen_data:
             json.dump(aa, f)
