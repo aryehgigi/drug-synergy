@@ -43,9 +43,12 @@ def get_already_annotated():
     for f_name in os.listdir(to_annotate_dir):
         print(f"reading {f_name}")
         with open(to_annotate_dir + f_name) as f:
-            readlines = [json.loads(y.strip())["sentence_text"] for y in f.readlines()]
-            if readlines:
-                already_annotated += [readlines]
+            for y in f.readlines():
+                loaded_y = json.loads(y.strip())
+                if "sentence_text" in loaded_y:
+                    already_annotated.append(loaded_y["sentence_text"])
+                else:
+                    print(f"{f_name} is missing a sentence_text {loaded_y}")
     return already_annotated
 
 
