@@ -105,7 +105,7 @@ if __name__ == "__main__":
     #   - the download csv has an option now to choose fields, so notice to choose:
     #       abstract, paragraph_text, article_link, sentence_text, title, capture_indices
     chosen_data_regular = []
-    if take_c_ds or take_non_c_ds:
+    if take_c or take_non_c:
         ls = get_examples("../all_with_abstracts.csv")
         chosen_data_regular = get_data_to_annotate(ls, already_annotated, cancer_list, take_c, take_non_c)
 
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     # The file distant_supervision.csv was created using: wget on the url of download csv (unlimited results),
     #   of the boolean query d1:{combos.1} d2:{combos.2}
     chosen_data_ds = []
-    if take_c or take_non_c:
+    if take_c_ds or take_non_c_ds:
         ds = clear_ds(get_examples("../distant_supervision.csv"))
         chosen_data_ds = get_data_to_annotate(ds, already_annotated, cancer_list, take_c_ds, take_non_c_ds)
 
