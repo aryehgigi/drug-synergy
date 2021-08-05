@@ -43,7 +43,9 @@ def get_already_annotated():
     for f_name in os.listdir(to_annotate_dir):
         print(f"reading {f_name}")
         with open(to_annotate_dir + f_name) as f:
-            already_annotated += [json.loads(y.strip())["sentence_text"] for y in f.readlines()]
+            readlines = [json.loads(y.strip())["sentence_text"] for y in f.readlines()]
+            if readlines:
+                already_annotated += [readlines]
     return already_annotated
 
 
