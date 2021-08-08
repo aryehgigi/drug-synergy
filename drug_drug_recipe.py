@@ -24,7 +24,7 @@ def drug_drug_recipe(dataset, annotators, annotator_idx, source):
         return len(" ".join(e['sentence_text'].split()[:j])) + (0 if j == 0 else 1)
     
     def find_sent_in_para(sent, para):
-        para = para.replace("\u2009", " ").replace("\u00a0", " ").replace("\u202f", " ").replace("\u2003", " ")
+        para = para.replace("\u2009", " ").replace("\u00a0", " ").replace("\u202f", " ").replace("\u2003", " ").replace("\u200a", " ")
         idx = para.replace(" ", "").find(sent.replace(" ", ""))
         c = 0
         for i in range(idx):
