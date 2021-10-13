@@ -35,7 +35,26 @@ def drug_drug_recipe(dataset, annotators, annotator_idx, source):
             while para[i + idx + c + c2] == " ":
                 c2 += 1
         return idx + c, idx + c + c2 + len(sent.replace(" ", ""))
-    
+
+    def get_spans(sent, drugs, example):
+        spans = []
+        conts = 0
+        for i, tok in enumerate(sent):
+            if conts:
+                conts -= 1
+                continue
+            if ((i + 1) < len(sent)) and ((i + 2) < len(sent)) and ((tok.lower() + " " + sent[i + 1] + " " + sent[i + 2]) in drugs):
+                spans.append({"start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok) + 2 + len(sent[i + 1]) + len(sent[i + 2]),
+                              "token_start": i, "token_end": i + 2, "label": "DRUG"})
+                conts = 2
+            elif (i + 1 < len(sent)) and (tok.lower() + " " + sent[i + 1] in drugs):
+                spans.append({"start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok) + 1 + len(sent[i + 1]),
+                              "token_start": i, "token_end": i + 1, "label": "DRUG"})
+            elif tok.lower() in drugs:
+                spans.append({"start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok),
+                              "token_start": i, "token_end": i, "label": "DRUG"})
+        return spans
+
     def load_my_custom_stream(s):
         with open(s) as f:
             examples = [json.loads(l.strip()) for l in  f.readlines()]
@@ -55,9 +74,7 @@ def drug_drug_recipe(dataset, annotators, annotator_idx, source):
                     {"text": tok, "start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "id": i, "ws": True if i + 1 != len(example['sentence_text'].split()) else False} # "disabled": not (find_sent_words_offsets(example['sentence_text'], example['abstract'])[0] <= i < find_sent_words_offsets(example['sentence_text'], example['paragraph_text'])[1]),
                     for i, tok in enumerate(example['sentence_text'].split())
                 ],
-                "spans": [
-                    {"start": get_start_offset(example, i), "end": get_start_offset(example, i) + len(tok), "token_start": i, "token_end": i, "label": "DRUG"} for i, tok in enumerate(example['sentence_text'].split()) if tok.lower() in drugs
-                ],
+                "spans": get_spans(example['sentence_text'].split(), drugs, example),
                 "article_link": example["article_link"],
             }
             out.append(d)
