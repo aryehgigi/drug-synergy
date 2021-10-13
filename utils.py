@@ -58,6 +58,8 @@ def create_vectors(gold, test, unify_negs, exact_match):
 
 
 def kappa_self(a1, a2):
+    if len(a1) == 0 or len(a2) == 0:
+        return 0
     cur_labels = set(a1 + a2)
     ao = sum(aa1 == aa2 for aa1, aa2 in zip(a1, a2)) / len(a1)
     ae = sum([(sum([aa == label for aa in a1]) / len(a1)) *
@@ -108,10 +110,10 @@ def f_from_p_r(gs, ts, labeled=False):
             if label != Label.NO_COMB.value:
                 interesting += 1
                 score += max([s if ((not labeled) or (other == label)) else 0 for other, s in matched])
-        return score / interesting
+        return (score / interesting) if interesting else 0
     p = get_max_sum_score(ts)
     r = get_max_sum_score(gs)
-    return (2 * p * r) / (p + r)
+    return ((2 * p * r) / (p + r)) if (p + r > 0) else 0
 
 
 # gold can be an annotator as reference or a data that is considered gold labeled.
