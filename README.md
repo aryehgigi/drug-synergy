@@ -13,12 +13,13 @@
 - agreement4_yakir_yosi(bulk2) - 25 examples (151-175) of to_annotate/pilot2_input_split (belonged to yosi on the split task) * 2 annotators (yosi and yakir) = 50 annotations
 - agreement3_fixed - 25 examples doubley annotated in agreement3_yakir_yosi(bulk2) fixed by yosi's arbitration on the disagreements = final 25 examples
 - test_set_1 - 75 examples double-annotated by yakir (25 of yuval, 25 of maytal and 25 of hagit) taken from bulk2 and 3 (first 25 of each 100 of the first 300 in the pilot2_input_split)
-- test_set_2 - 75 examples double-annotated by shaked (25 of dana_n, 25 of dana_a and 25 of yosi) taken from bulk2 and 3 (first 25 of each 100 of the last 300 in the pilot2_input_split)
+- test_set_2 - 74 examples double-annotated by shaked (25 of dana_n, 25 of dana_a and 25 of yosi) taken from bulk2 and 3 (first 25 of each 100 of the last 300 in the pilot2_input_split)
+  - one of the 75 was emitted because it had only one kind of drug
 - test_set_1_gold and test_set_2_gold - are (each) the 75 first-time-annotated taken from bulk2 and 3.
-- test_set_1_combined and test_set_2_combined - are (each) 150 of the combined test_set_x + test_set_x_gold
-- test_set_1_2_arbitrated - the 150 examples of testset1 and 2 combined. where there was disagreement we used yosi's arbitration to decide from which annotator to take.
-- examples_7 - test_set_1_2_arbitrated 150 examples and 25 exampels from agreement3_fixed combined, and converted to model's input format = 150 + 25 = 175
+- test_set_1_combined and test_set_2_combined - are (each) 149 of the combined test_set_x + test_set_x_gold
+- test_set_1_2_arbitrated - the 149 examples of testset1 and 2 combined. where there was disagreement we used yosi's arbitration to decide from which annotator to take.
+- examples_7 - test_set_1_2_arbitrated 149 examples and 25 exampels from agreement3_fixed combined, and converted to model's input format = 149 + 25 = 174
 - all_relevant - agreement1 + agreement2 + bulk1(only 75, 25 of each of the best agreement scorers) + bulk2 + bulk3
 - examples6_fixed - all_relevant converted to model's input format, except: 11 with one only drug, 16 that got an "ignore"
 - bulk4 - 900 new examples from pilot3 minus 16 ignored ones = 884
-- examples8 - examples6_fixed + bulk4-converted-to-model's-input without the 150 examples of the text set examples_7 = 756 + 884 - 175 = 1465 examples
+- examples8 - examples6_fixed + bulk4-converted-to-model's-input without the 150 examples of the text set examples_7 = 756 + 884 - 175 = 1466 examples
