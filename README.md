@@ -23,3 +23,4 @@
 - examples6_fixed - all_relevant converted to model's input format, except: 11 with one only drug, 16 that got an "ignore"
 - bulk4 - 900 new examples from pilot3 minus 16 ignored ones = 884
 - examples8 - examples6_fixed + bulk4-converted-to-model's-input without the 150 examples of the text set examples_7 = 756 + 884 - 175 = 1466 examples
+  - we have fixed ~10 examples manually after confirming with yosi

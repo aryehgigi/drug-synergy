@@ -3,6 +3,7 @@ import sys
 import json
 import re
 import utils
+import hashlib
 
 g_anns = ['yosi', 'shaked', 'dana_a', 'dana_n', 'yuval', 'yakir', 'hagit', 'maytal']
 
@@ -83,7 +84,7 @@ def process_prodigy_output(src, annotators, include_no_combs):
                 **{'token_end': span['token_end'] + 1}}
             for i, span in enumerate(spans.values())
         ]
-        examples_out += json.dumps({"sentence": text, "spans": spans_fixed, "rels": final, "paragraph": para, "source": annotated.get("article_link", None)}) + "\n"
+        examples_out += json.dumps({"doc_id": hashlib.md5((text).encode()).hexdigest(), "sentence": text, "spans": spans_fixed, "rels": final, "paragraph": para, "source": annotated.get("article_link", None)}) + "\n"
     # sort rels_by_anno for alignment:
     sort_rels(rels_by_anno)
 
@@ -120,11 +121,11 @@ def label_container(spans1, spans2, text, para, lines_to_add, annotator1, annota
     s = max(len(annotator2), len(annotator1))
     lines_to_add.append('''<div class="supercontainer"><div class="midcontainer">''')
     lines_to_add.append(f'''<div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
-    lines_to_add.append("<b>" + f'{annotator1.capitalize():{s}}'.replace(" ", "_") + ":</b> ")
+    lines_to_add.append("<b>AnnotatorA:</b> ")
     label_text(spans1, text, lines_to_add)
     lines_to_add.append(
         '''</div></div><div class="container"><div class="annotation-head"></div><div class="annotation-segment">''')
-    lines_to_add.append("<b>" + f'{annotator2.capitalize():{s}}'.replace(" ", "_") + ":</b> ")
+    lines_to_add.append("<b>AnnotatorB:</b> ")
     label_text(spans2, text, lines_to_add)
     lines_to_add.append('''</div></div></div><div class="abstractcontainer">''')
     lines_to_add.append(
@@ -134,13 +135,13 @@ def label_container(spans1, spans2, text, para, lines_to_add, annotator1, annota
 
 def make_html(rels_by_anno):
     ls2 = []
-    annotator1 = "yosi"
+    annotator1 = "shaked"
     annotations1 = rels_by_anno[annotator1]
     visited = set()
     for annotator2, annotations2 in rels_by_anno.items():
         if annotator2 == annotator1:
             continue
-        ls2.append(f'''<button type="button" class="collapsible">{annotator1} - {annotator2}</button>
+        ls2.append(f'''<button type="button" class="collapsible">AnnotatorA - AnnotatorB</button>
         <div>''')
         spans1 = []
         for i, annotation1 in enumerate(annotations1):
@@ -177,7 +178,7 @@ def make_html(rels_by_anno):
                 ls_post.append(l)
             else:
                 ls_pre.append(l)
-    with open("explains/explain_edited.html", "w") as f:
+    with open("explains/explain_test_set_2.html", "w") as f:
         f.writelines(ls_pre)
         f.writelines(ls2)
         f.writelines(ls_post)
