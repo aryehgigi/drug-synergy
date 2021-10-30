@@ -135,7 +135,7 @@ def label_container(spans1, spans2, text, para, lines_to_add, annotator1, annota
 
 def make_html(rels_by_anno):
     ls2 = []
-    annotator1 = "shaked"
+    annotator1 = "yosi"
     annotations1 = rels_by_anno[annotator1]
     visited = set()
     for annotator2, annotations2 in rels_by_anno.items():
@@ -178,7 +178,7 @@ def make_html(rels_by_anno):
                 ls_post.append(l)
             else:
                 ls_pre.append(l)
-    with open("explains/explain_test_set_2.html", "w") as f:
+    with open("explains/explain_edited.html", "w") as f:
         f.writelines(ls_pre)
         f.writelines(ls2)
         f.writelines(ls_post)
