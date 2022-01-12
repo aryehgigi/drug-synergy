@@ -8,7 +8,6 @@ synergy
 additivesynergistic
 supraadditive
 super-additive
-Greater-than-additive
 beneficial
 over-additive
 sub-additive
