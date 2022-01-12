@@ -1,8 +1,8 @@
 from enum import Enum
 import numpy as np
 from collections import defaultdict
-from nltk import agreement
-from sklearn.metrics import cohen_kappa_score
+# from nltk import agreement
+# from sklearn.metrics import cohen_kappa_score
 
 
 class Label(Enum):
@@ -10,15 +10,20 @@ class Label(Enum):
     COMB_NEG = 1
     COMB = 2
     COMB_POS = 3
-    NEG_AND_COMB = 4
+    UNIFY = 4
 
 
 labels = {"POS": Label.COMB_POS.value, "NEG": Label.COMB_NEG.value, "COMB": Label.COMB.value, "NO_COMB": Label.NO_COMB.value}
-labels2 = {"POS": Label.COMB_POS.value, "NEG": Label.NEG_AND_COMB.value, "COMB": Label.NEG_AND_COMB.value, "NO_COMB": Label.NO_COMB.value}
+labels1 = {"POS": Label.COMB_POS.value, "NEG": Label.UNIFY.value, "COMB": Label.UNIFY.value, "NO_COMB": Label.NO_COMB.value}
+labels2 = {"POS": Label.UNIFY.value, "NEG": Label.UNIFY.value, "COMB": Label.UNIFY.value, "NO_COMB": Label.NO_COMB.value}
+labels3 = {"POS": Label.COMB_POS.value, "NEG": Label.NO_COMB.value, "COMB": Label.NO_COMB.value, "NO_COMB": Label.NO_COMB.value}
+labels4 = {"POS": Label.COMB_POS.value, "NEG": Label.NO_COMB.value, "COMB": Label.NO_COMB.value, "NO_COMB": Label.NO_COMB.value}
+
+unification_scheme = {0: labels, 1: labels1, 2: labels2, 3: labels3, 4: labels4}
 
 
 def get_label(rel, unify_negs):
-    return labels[rel['class']] if not unify_negs else labels2[rel['class']]
+    return unification_scheme[unify_negs][rel['class']]
 
 
 def create_vectors(gold, test, unify_negs, exact_match):
@@ -157,7 +162,7 @@ def print_kappas(kappas, anns, unify_negs, structure_agreement):
 def relation_agreement(rels_by_anno, anns, exact_match=False):
     m = [np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns))), np.ones((len(anns), len(anns)))]
     t_c_m = np.zeros((len(labels), len(labels)))
-    for m_i, unify_negs in enumerate([False, True]):
+    for m_i, unify_negs in enumerate([0, 1, 2, 3]):
         kappas = []
         sum_f = 0
         sum_f_labeled = 0
@@ -171,28 +176,28 @@ def relation_agreement(rels_by_anno, anns, exact_match=False):
                 f, f_labeled = f_score(rels_by_anno[anns[i]], rels_by_anno[anns[j]], unify_negs, exact_match)
                 sum_f += f
                 sum_f_labeled += f_labeled
-                m[m_i][i, j] = f
-                m[m_i + 2][i, j] = f_labeled
-                if (not unify_negs) and (j > i):
+                # m[m_i][i, j] = f
+                # m[m_i + 2][i, j] = f_labeled
+                if (0 == unify_negs) and (j > i):
                     c_m = get_confusion_matrix(rels_by_anno[anns[i]], rels_by_anno[anns[j]])
                     t_c_m = np.add(t_c_m, c_m)
-                k, agreed, total = calculate_cohens_kappa(rels_by_anno[anns[i]], rels_by_anno[anns[j]], unify_negs)
-                total_agreed.append(agreed)
-                total_total.append(total)
-                if j > i:
-                    kappas.append(k)
-            structure_agreement.append((sum(total_agreed) / len(total_agreed), sum(total_total) / len(total_total)))
-        print(f"averaged unlabeled F1 score {'where POS vs NEG+COMB ' if unify_negs else ''}= {sum_f / (len(anns) * (len(anns) - 1))}")
-        print(f"averaged labeled F1 score {'where POS vs NEG+COMB ' if unify_negs else ''}= {sum_f_labeled / (len(anns) * (len(anns) - 1))}")
-        print_kappas(kappas, anns, unify_negs, structure_agreement)
-    for i, m_i in enumerate([m[0], m[2], m[1], m[3]]):
-        if i == 2:
-            continue
-        print(f"This is {'POS vs NEG+COMB ' if i > 1 else ''}{'unlabeled' if i % 2 == 0 else 'labeled'} pairwise F1 score table:")
-        print(f'{"":7}', [f'{ann.split("-")[-1]:7}' for ann in anns])
-        for i, l in enumerate(m_i):
-            print(f'{anns[i].split("-")[-1]:7}', [f"{ll:7.4f}" for ll in l])
-        print()
+                # k, agreed, total = calculate_cohens_kappa(rels_by_anno[anns[i]], rels_by_anno[anns[j]], unify_negs)
+                # total_agreed.append(agreed)
+                # total_total.append(total)
+                # if j > i:
+                #     kappas.append(k)
+            #structure_agreement.append((sum(total_agreed) / len(total_agreed), sum(total_total) / len(total_total)))
+        print(f"averaged unlabeled F1 score where the unification scheme is {unify_negs}= {sum_f / (len(anns) * (len(anns) - 1))}")
+        print(f"averaged labeled F1 score where the unification scheme is {unify_negs}= {sum_f_labeled / (len(anns) * (len(anns) - 1))}")
+        #print_kappas(kappas, anns, unify_negs, structure_agreement)
+    # for i, m_i in enumerate([m[0], m[2], m[1], m[3]]):
+    #     if i == 2:
+    #         continue
+    #     print(f"This is {'POS vs NEG+COMB ' if i > 1 else ''}{'unlabeled' if i % 2 == 0 else 'labeled'} pairwise F1 score table:")
+    #     print(f'{"":7}', [f'{ann.split("-")[-1]:7}' for ann in anns])
+    #     for i, l in enumerate(m_i):
+    #         print(f'{anns[i].split("-")[-1]:7}', [f"{ll:7.4f}" for ll in l])
+    #     print()
     labels_sorted = [k if k != "NO_COMB" else "N_C" for k, v in sorted(labels.items(), key=lambda x: x[1])]
     print(f'{"":4}', [f'{label:4}' for label in labels_sorted])
     for i, l in enumerate(t_c_m):

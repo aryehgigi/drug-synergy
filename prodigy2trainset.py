@@ -324,6 +324,7 @@ if __name__ == "__main__":
     # compute agreement
     if do_agreement:
         utils.relation_agreement(rels_by_anno, annotators)
+        utils.relation_agreement(rels_by_anno, annotators, True)
 
     # prepare disagreement html
     if do_agreement_html:
