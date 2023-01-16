@@ -1,0 +1,524 @@
+<recGeneTree
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.recgenetreexml.org"
+  xsi:schemaLocation="http://www.recgenetreexml.org ../../xsd/recGeneTreeXML.xsd">
+  <phylogeny rooted="true">
+    <id>FAM0003</id>
+    <clade>
+      <name>.35</name>
+      <eventsRec>
+        <speciation speciesLocation="35"></speciation>
+      </eventsRec>
+      <clade>
+        <name>.34.20.3</name>
+        <eventsRec>
+          <speciation speciesLocation="34"></speciation>
+        </eventsRec>
+        <clade>
+          <name>LOSS</name>
+          <eventsRec>
+            <loss speciesLocation=""></loss>
+          </eventsRec>
+        </clade>
+        <clade>
+          <name>.34.20.3.c</name>
+          <eventsRec>
+            <speciation speciesLocation="20"></speciation>
+          </eventsRec>
+          <clade>
+            <name>LOSS</name>
+            <eventsRec>
+              <loss speciesLocation=""></loss>
+            </eventsRec>
+          </clade>
+          <clade>
+            <name>.34.20.3.c.c</name>
+            <eventsRec>
+              <speciation speciesLocation="3"></speciation>
+            </eventsRec>
+            <clade>
+              <name>SYNJB_1_PE950</name>
+              <eventsRec>
+                <leaf speciesLocation="SYNJB" geneName="SYNJB_1_PE950"></leaf>
+              </eventsRec>
+            </clade>
+            <clade>
+              <name>SYNJA_1_PE2030</name>
+              <eventsRec>
+                <leaf speciesLocation="SYNJA" geneName="SYNJA_1_PE2030"></leaf>
+              </eventsRec>
+            </clade>
+          </clade>
+        </clade>
+      </clade>
+      <clade>
+        <name>.33</name>
+        <eventsRec>
+          <speciation speciesLocation="33"></speciation>
+        </eventsRec>
+        <clade>
+          <name>.27.26</name>
+          <eventsRec>
+            <speciation speciesLocation="27"></speciation>
+          </eventsRec>
+          <clade>
+            <name>LOSS</name>
+            <eventsRec>
+              <loss speciesLocation=""></loss>
+            </eventsRec>
+          </clade>
+          <clade>
+            <name>.27.26.c</name>
+            <eventsRec>
+              <speciation speciesLocation="26"></speciation>
+            </eventsRec>
+            <clade>
+              <name>CYAP4_1_PE420</name>
+              <eventsRec>
+                <leaf speciesLocation="CYAP4" geneName="CYAP4_1_PE420"></leaf>
+              </eventsRec>
+            </clade>
+            <clade>
+              <name>T@1|THEEB</name>
+              <eventsRec>
+                <branchingOut speciesLocation="THEEB"></branchingOut>
+              </eventsRec>
+              <clade>
+                <name>THEEB_1_PE1494</name>
+                <eventsRec>
+                  <leaf speciesLocation="THEEB" geneName="THEEB_1_PE1494"></leaf>
+                </eventsRec>
+              </clade>
+              <clade>
+                <name>GLVIO1_1_PE1169@0|GLVIO1</name>
+                <eventsRec>
+                  <transferBack destinationSpecies="GLVIO1"></transferBack>
+                  <leaf speciesLocation="GLVIO1" geneName="GLVIO1_1_PE1169"></leaf>
+                </eventsRec>
+              </clade>
+            </clade>
+          </clade>
+        </clade>
+        <clade>
+          <name>.32</name>
+          <eventsRec>
+            <speciation speciesLocation="32"></speciation>
+          </eventsRec>
+          <clade>
+            <name>.31</name>
+            <eventsRec>
+              <speciation speciesLocation="31"></speciation>
+            </eventsRec>
+            <clade>
+              <name>TRIEI_1_PE668</name>
+              <eventsRec>
+                <leaf speciesLocation="TRIEI" geneName="TRIEI_1_PE668"></leaf>
+              </eventsRec>
+            </clade>
+            <clade>
+              <name>.18</name>
+              <eventsRec>
+                <speciation speciesLocation="18"></speciation>
+              </eventsRec>
+              <clade>
+                <name>NOSP7_2_PE4607</name>
+                <eventsRec>
+                  <leaf speciesLocation="NOSP7" geneName="NOSP7_2_PE4607"></leaf>
+                </eventsRec>
+              </clade>
+              <clade>
+                <name>.6</name>
+                <eventsRec>
+                  <speciation speciesLocation="6"></speciation>
+                </eventsRec>
+                <clade>
+                  <name>ANAVT_4_PE931</name>
+                  <eventsRec>
+                    <leaf speciesLocation="ANAVT" geneName="ANAVT_4_PE931"></leaf>
+                  </eventsRec>
+                </clade>
+                <clade>
+                  <name>ANASP_6_PE2969</name>
+                  <eventsRec>
+                    <leaf speciesLocation="ANASP" geneName="ANASP_6_PE2969"></leaf>
+                  </eventsRec>
+                </clade>
+              </clade>
+            </clade>
+          </clade>
+          <clade>
+            <name>.30</name>
+            <eventsRec>
+              <speciation speciesLocation="30"></speciation>
+            </eventsRec>
+            <clade>
+              <name>ACAM1_1_PE135.T@27|SYNP2@26|ACAM1</name>
+              <eventsRec>
+                <branchingOut speciesLocation="SYNP2"></branchingOut>
+              </eventsRec>
+              <clade>
+                <name>LOSS</name>
+                <eventsRec>
+                  <loss speciesLocation=""></loss>
+                </eventsRec>
+              </clade>
+              <clade>
+                <name>ACAM1_1_PE135.T@27|SYNP2@26|ACAM1.c</name>
+                <eventsRec>
+                  <transferBack destinationSpecies="ACAM1"></transferBack>
+                  <leaf speciesLocation="ACAM1" geneName="ACAM1_1_PE135"></leaf>
+                </eventsRec>
+              </clade>
+            </clade>
+            <clade>
+              <name>.29</name>
+              <eventsRec>
+                <speciation speciesLocation="29"></speciation>
+              </eventsRec>
+              <clade>
+                <name>.25</name>
+                <eventsRec>
+                  <speciation speciesLocation="25"></speciation>
+                </eventsRec>
+                <clade>
+                  <name>.15</name>
+                  <eventsRec>
+                    <speciation speciesLocation="15"></speciation>
+                  </eventsRec>
+                  <clade>
+                    <name>CYAA5_6_PE594</name>
+                    <eventsRec>
+                      <leaf speciesLocation="CYAA5" geneName="CYAA5_6_PE594"></leaf>
+                    </eventsRec>
+                  </clade>
+                  <clade>
+                    <name>CYAP8_1_PE2632</name>
+                    <eventsRec>
+                      <leaf speciesLocation="CYAP8" geneName="CYAP8_1_PE2632"></leaf>
+                    </eventsRec>
+                  </clade>
+                </clade>
+                <clade>
+                  <name>.24</name>
+                  <eventsRec>
+                    <speciation speciesLocation="24"></speciation>
+                  </eventsRec>
+                  <clade>
+                    <name>CYAP7_1_PE2280</name>
+                    <eventsRec>
+                      <leaf speciesLocation="CYAP7" geneName="CYAP7_1_PE2280"></leaf>
+                    </eventsRec>
+                  </clade>
+                  <clade>
+                    <name>MICAN_1_PE2716</name>
+                    <eventsRec>
+                      <leaf speciesLocation="MICAN" geneName="MICAN_1_PE2716"></leaf>
+                    </eventsRec>
+                  </clade>
+                </clade>
+              </clade>
+              <clade>
+                <name>T@23|SYNY3</name>
+                <eventsRec>
+                  <branchingOut speciesLocation="SYNY3"></branchingOut>
+                </eventsRec>
+                <clade>
+                  <name>SYNY3_4_PE2642</name>
+                  <eventsRec>
+                    <leaf speciesLocation="SYNY3" geneName="SYNY3_4_PE2642"></leaf>
+                  </eventsRec>
+                </clade>
+                <clade>
+                  <name>Tb@23|23</name>
+                  <eventsRec>
+                    <branchingOut speciesLocation="23"></branchingOut>
+                  </eventsRec>
+                  <clade>
+                    <name>@22|1.1</name>
+                    <eventsRec>
+                      <transferBack destinationSpecies="1"></transferBack>
+                      <speciation speciesLocation="1"></speciation>
+                    </eventsRec>
+                    <clade>
+                      <name>SYNE7_1_PE221</name>
+                      <eventsRec>
+                        <leaf speciesLocation="SYNE7" geneName="SYNE7_1_PE221"></leaf>
+                      </eventsRec>
+                    </clade>
+                    <clade>
+                      <name>SYNP6_1_PE1291</name>
+                      <eventsRec>
+                        <leaf speciesLocation="SYNP6" geneName="SYNP6_1_PE1291"></leaf>
+                      </eventsRec>
+                    </clade>
+                  </clade>
+                  <clade>
+                    <name>.23</name>
+                    <eventsRec>
+                      <speciation speciesLocation="23"></speciation>
+                    </eventsRec>
+                    <clade>
+                      <name>SYNR3_2_PE944</name>
+                      <eventsRec>
+                        <leaf speciesLocation="SYNR3" geneName="SYNR3_2_PE944"></leaf>
+                      </eventsRec>
+                    </clade>
+                    <clade>
+                      <name>T@22|22</name>
+                      <eventsRec>
+                        <branchingOut speciesLocation="22"></branchingOut>
+                      </eventsRec>
+                      <clade>
+                        <name>@18|11.11</name>
+                        <eventsRec>
+                          <transferBack destinationSpecies="11"></transferBack>
+                          <speciation speciesLocation="11"></speciation>
+                        </eventsRec>
+                        <clade>
+                          <name>SYNPW_2_PE774</name>
+                          <eventsRec>
+                            <leaf speciesLocation="SYNPW" geneName="SYNPW_2_PE774"></leaf>
+                          </eventsRec>
+                        </clade>
+                        <clade>
+                          <name>SYNS3_1_PE1833</name>
+                          <eventsRec>
+                            <leaf speciesLocation="SYNS3" geneName="SYNS3_1_PE1833"></leaf>
+                          </eventsRec>
+                        </clade>
+                      </clade>
+                      <clade>
+                        <name>.22</name>
+                        <eventsRec>
+                          <speciation speciesLocation="22"></speciation>
+                        </eventsRec>
+                        <clade>
+                          <name>.19.13</name>
+                          <eventsRec>
+                            <speciation speciesLocation="19"></speciation>
+                          </eventsRec>
+                          <clade>
+                            <name>LOSS</name>
+                            <eventsRec>
+                              <loss speciesLocation=""></loss>
+                            </eventsRec>
+                          </clade>
+                          <clade>
+                            <name>.19.13.c</name>
+                            <eventsRec>
+                              <speciation speciesLocation="13"></speciation>
+                            </eventsRec>
+                            <clade>
+                              <name>SYNPX_1_PE1481</name>
+                              <eventsRec>
+                                <leaf speciesLocation="SYNPX" geneName="SYNPX_1_PE1481"></leaf>
+                              </eventsRec>
+                            </clade>
+                            <clade>
+                              <name>.12</name>
+                              <eventsRec>
+                                <speciation speciesLocation="12"></speciation>
+                              </eventsRec>
+                              <clade>
+                                <name>SYNSC_1_PE1008</name>
+                                <eventsRec>
+                                  <leaf speciesLocation="SYNSC" geneName="SYNSC_1_PE1008"></leaf>
+                                </eventsRec>
+                              </clade>
+                              <clade>
+                                <name>SYNS9_1_PE925</name>
+                                <eventsRec>
+                                  <leaf speciesLocation="SYNS9" geneName="SYNS9_1_PE925"></leaf>
+                                </eventsRec>
+                              </clade>
+                            </clade>
+                          </clade>
+                        </clade>
+                        <clade>
+                          <name>.21</name>
+                          <eventsRec>
+                            <speciation speciesLocation="21"></speciation>
+                          </eventsRec>
+                          <clade>
+                            <name>.4</name>
+                            <eventsRec>
+                              <speciation speciesLocation="4"></speciation>
+                            </eventsRec>
+                            <clade>
+                              <name>PROM3_1_PE1845</name>
+                              <eventsRec>
+                                <leaf speciesLocation="PROM3" geneName="PROM3_1_PE1845"></leaf>
+                              </eventsRec>
+                            </clade>
+                            <clade>
+                              <name>PROMM_1_PE495</name>
+                              <eventsRec>
+                                <leaf speciesLocation="PROMM" geneName="PROMM_1_PE495"></leaf>
+                              </eventsRec>
+                            </clade>
+                          </clade>
+                          <clade>
+                            <name>.17</name>
+                            <eventsRec>
+                              <speciation speciesLocation="17"></speciation>
+                            </eventsRec>
+                            <clade>
+                              <name>.16.2</name>
+                              <eventsRec>
+                                <speciation speciesLocation="16"></speciation>
+                              </eventsRec>
+                              <clade>
+                                <name>LOSS</name>
+                                <eventsRec>
+                                  <loss speciesLocation=""></loss>
+                                </eventsRec>
+                              </clade>
+                              <clade>
+                                <name>.16.2.c</name>
+                                <eventsRec>
+                                  <speciation speciesLocation="2"></speciation>
+                                </eventsRec>
+                                <clade>
+                                  <name>PROM1_1_PE651</name>
+                                  <eventsRec>
+                                    <leaf speciesLocation="PROM1" geneName="PROM1_1_PE651"></leaf>
+                                  </eventsRec>
+                                </clade>
+                                <clade>
+                                  <name>PROMT_1_PE635</name>
+                                  <eventsRec>
+                                    <leaf speciesLocation="PROMT" geneName="PROMT_1_PE635"></leaf>
+                                  </eventsRec>
+                                </clade>
+                              </clade>
+                            </clade>
+                            <clade>
+                              <name>.14</name>
+                              <eventsRec>
+                                <speciation speciesLocation="14"></speciation>
+                              </eventsRec>
+                              <clade>
+                                <name>PRMAR1_1_PE1063</name>
+                                <eventsRec>
+                                  <leaf speciesLocation="PRMAR1" geneName="PRMAR1_1_PE1063"></leaf>
+                                </eventsRec>
+                              </clade>
+                              <clade>
+                                <name>T@10|PROM4</name>
+                                <eventsRec>
+                                  <branchingOut speciesLocation="PROM4"></branchingOut>
+                                </eventsRec>
+                                <clade>
+                                  <name>PROM4_1_PE1056</name>
+                                  <eventsRec>
+                                    <leaf speciesLocation="PROM4" geneName="PROM4_1_PE1056"></leaf>
+                                  </eventsRec>
+                                </clade>
+                                <clade>
+                                  <name>Tb@10|10</name>
+                                  <eventsRec>
+                                    <branchingOut speciesLocation="10"></branchingOut>
+                                  </eventsRec>
+                                  <clade>
+                                    <name>PROM5_1_PE662@4|PROM5</name>
+                                    <eventsRec>
+                                      <transferBack destinationSpecies="PROM5"></transferBack>
+                                      <leaf speciesLocation="PROM5" geneName="PROM5_1_PE662"></leaf>
+                                    </eventsRec>
+                                  </clade>
+                                  <clade>
+                                    <name>.10</name>
+                                    <eventsRec>
+                                      <speciation speciesLocation="10"></speciation>
+                                    </eventsRec>
+                                    <clade>
+                                      <name>PROMP_1_PE651.5</name>
+                                      <eventsRec>
+                                        <speciation speciesLocation="5"></speciation>
+                                      </eventsRec>
+                                      <clade>
+                                        <name>LOSS</name>
+                                        <eventsRec>
+                                          <loss speciesLocation=""></loss>
+                                        </eventsRec>
+                                      </clade>
+                                      <clade>
+                                        <name>PROMP_1_PE651.5.c</name>
+                                        <eventsRec>
+                                          <leaf speciesLocation="PROMP" geneName="PROMP_1_PE651"></leaf>
+                                        </eventsRec>
+                                      </clade>
+                                    </clade>
+                                    <clade>
+                                      <name>.9</name>
+                                      <eventsRec>
+                                        <speciation speciesLocation="9"></speciation>
+                                      </eventsRec>
+                                      <clade>
+                                        <name>PROM9_1_PE623</name>
+                                        <eventsRec>
+                                          <leaf speciesLocation="PROM9" geneName="PROM9_1_PE623"></leaf>
+                                        </eventsRec>
+                                      </clade>
+                                      <clade>
+                                        <name>.8.7</name>
+                                        <eventsRec>
+                                          <speciation speciesLocation="8"></speciation>
+                                        </eventsRec>
+                                        <clade>
+                                          <name>LOSS</name>
+                                          <eventsRec>
+                                            <loss speciesLocation=""></loss>
+                                          </eventsRec>
+                                        </clade>
+                                        <clade>
+                                          <name>.8.7.c</name>
+                                          <eventsRec>
+                                            <speciation speciesLocation="7"></speciation>
+                                          </eventsRec>
+                                          <clade>
+                                            <name>PROMS_1_PE651</name>
+                                            <eventsRec>
+                                              <leaf speciesLocation="PROMS" geneName="PROMS_1_PE651"></leaf>
+                                            </eventsRec>
+                                          </clade>
+                                          <clade>
+                                            <name>T@1|PROM0</name>
+                                            <eventsRec>
+                                              <branchingOut speciesLocation="PROM0"></branchingOut>
+                                            </eventsRec>
+                                            <clade>
+                                              <name>PROM0_1_PE623</name>
+                                              <eventsRec>
+                                                <leaf speciesLocation="PROM0" geneName="PROM0_1_PE623"></leaf>
+                                              </eventsRec>
+                                            </clade>
+                                            <clade>
+                                              <name>PROM2_1_PE676@0|PROM2</name>
+                                              <eventsRec>
+                                                <transferBack destinationSpecies="PROM2"></transferBack>
+                                                <leaf speciesLocation="PROM2" geneName="PROM2_1_PE676"></leaf>
+                                              </eventsRec>
+                                            </clade>
+                                          </clade>
+                                        </clade>
+                                      </clade>
+                                    </clade>
+                                  </clade>
+                                </clade>
+                              </clade>
+                            </clade>
+                          </clade>
+                        </clade>
+                      </clade>
+                    </clade>
+                  </clade>
+                </clade>
+              </clade>
+            </clade>
+          </clade>
+        </clade>
+      </clade>
+    </clade>
+  </phylogeny>
+</recGeneTree>

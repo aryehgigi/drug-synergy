@@ -1,0 +1,67 @@
+import csv
+
+f = open(r"C:\Users\Backup PC\Downloads\results2.csv")
+r2 = csv.DictReader(f)
+r = [(rr['sentence_text'].lower(), rr['paragraph_text'].lower()) for rr in r2]
+drug2 = "artesunate"
+lefts = [rr for rr in r if drug2 not in rr[0]]
+syns = [l.strip().lower() for l in open(r"C:\Users\Backup PC\Documents\aryeht\syn.txt").readlines()]
+
+lefts2 = []
+for left in lefts:
+    found = False
+    for sent in left[1].split("."):
+        if any(syn in sent for syn in syns):
+            if (("mefloquine" in sent) or ("mefloquina" in sent) or ("mq" in sent)) and ("artesunate" in sent):
+                found = True
+    if not found:
+        lefts2.append(left)
+
+############################
+
+d = [l.strip().lower() for l in open(r"C:\Users\Backup PC\Documents\aryeht\drugs.txt").readlines()]
+rs = []
+for i, rr in enumerate(r):
+    if i % 100 == 0:
+        print(i)
+    if any(dd for dd in d if ((dd not in rr[0]) and (dd in rr[1]))):
+        rs.append(rr)
+
+
+###################
+
+no 0 [('combination', [803])]
+no 1 [('combination', [803])]
+no 2 [('combination', [764, 929, 1048, 1367, 1541, 1897])]
+no 3 [('combination', [764, 929, 1048, 1367, 1541, 1897])]
+no 4 [('combination', [764, 929, 1048, 1367, 1541, 1897])]
+yes 5 [('combination', [192])]
+no 6 [('combination', [1271])]
+no 7 [('followed by', [387])]
+no 8 [('followed by', [262, 442]), ('prior to', [1280])]
+no 9 [('followed by', [262, 442]), ('prior to', [1280])]
+no 10 [('combination', [971, 1662])]
+no 11 [('first choice', [920]), ('combination', [1090, 2450]), ('combined', [1060]), ('combining', [2820])]
+no 12 [('first choice', [920]), ('combination', [1090, 2450]), ('combined', [1060]), ('combining', [2820])]
+no 13 [('combination', [502, 1600, 1685]), ('two-drug', [493]), ('combinations', [502, 1600])]
+no 14 [('combination', [157, 597, 717])]
+no 15 [('combination', [157, 597, 717])]
+no 16 [('first-line', [224]), ('combination', [187])]
+no 17 [('first-line', [224]), ('combination', [187])]
+yes 18 [('combination', [1783, 1825])]
+no 19 [('combination', [626]), ('combinations', [626])]
+no 20 [('combination', [1412, 1568]), ('combined', [1682])]
+no 21 [('combination', [1412, 1568]), ('combined', [1682])]
+no 22 [('combination', [1412, 1568]), ('combined', [1682])]
+no 23 [('combination', [1412, 1568]), ('combined', [1682])]
+no 24 [('followed by', [642])]
+no 25 [('combination', [15, 340, 588, 799, 964]), ('combinations', [15, 340, 964])]
+no 26 [('combination', [999])]
+no 27 [('combination', [999])]
+yes 28 [('combination', [162])]
+no 29 [('combination', [1051])]
+no 30 [('synergistic', [575]), ('additive', [556]), ('synergy', [670])]
+no 31 [('synergistic', [575]), ('additive', [556]), ('synergy', [670])]
+no 32 [('synergistic', [572]), ('combination', [401])]
+no 33 [('combination', [83]), ('combined', [2077])]
+no 34 [('beneficial', [1542]), ('followed by', [832])]

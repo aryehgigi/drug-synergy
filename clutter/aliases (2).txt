@@ -1,0 +1,87 @@
+Plasmaviridae
+bacterial virus
+prokaryotic virus
+bacterial viruses
+Plasmavirus
+Acholeplasma virus L2
+Bacteriophage L2
+Acholeplasma laidlawii phage L2
+Acholeplasma phage L2
+Polydnaviridae
+Ichnovirus
+Campoletis sonorensis ichnovirus
+Campoletis sonorensis virus
+Campoletis sonorensis polydnavirus CsPDV
+CsPDV
+Campoletis sonorensis virus CsV
+Campoletis sonorensis polydnavirus
+CsIV
+Campoletis sonorensis ichnovirus (strain Texas A&M)
+Hyposoter fugitivus ichnovirus
+HfIV
+unclassified Ichnovirus
+Tranosema rostrale ichnovirus
+Tranosema rostrales ichnovirus
+Tranosema rostrale virus
+TrIV
+Hyposoter didymator ichnovirus
+Hyposoter didymator polyDNAvirus
+Hyposoter didymator virus
+Campoletis sp. ichnovirus
+Campoletis chlorideae ichnovirus
+Diadegma semiclausum ichnovirus
+Apophua simplicipes ichnovirus
+Diadegma fenestrale ichnovirus
+DfIV
+Hyposoter ichnovirus EGC-2015
+Glypta fumiferanae ichnovirus
+Bracovirus
+Chelonus inanitus bracovirus
+Chelonus inanitus virus
+Cotesia congregata bracovirus
+Cotesia congregata Polydnavirus
+Cotesia congregata virus
+Cotesia rubecula bracovirus
+Cotesia rubecula virus
+Cotesia rubecula polydnavirus
+Microplitis demolitor bracovirus
+Microplitis demolitor virus
+Microplitis demolitor polydnavirus
+Microplitis demolitor bracovirus (isolate Webb)
+Glyptapanteles indiensis bracovirus
+Glyptapanteles indiensis polydnavirus
+Cotesia kariyai bracovirus
+Cotesia kariyai polydnavirus
+Cotesia glomerata bracovirus
+Cotesia glomerata polydnavirus
+unclassified Bracovirus
+Cotesia ruficrus polydnavirus
+Cotesia plutellae polydnavirus
+Microplitis bicoloratus bracovirus
+Microplitis bicoloratus polydnavirus
+Cotesia plutellae bracovirus
+Cotesia plutallae bracovirus
+Cotesia vestalis bracovirus
+Cotesia vestalis polydnavirus
+Cotesia sesamiae bracovirus
+Cotesia sesamiae Kitale bracovirus
+Cotesia sesamiae Mombasa bracovirus
+Cotesia chilonis bracovirus
+Cotesia sp. bracovirus
+Choeras sp. bracovirus
+Dolichogenidae sp. bracovirus
+Apanteles sp. bracovirus
+Microplitis mediator bracovirus
+Microplitis similis bracovirus
+Microplitis pennatulae bracovirus
+Glyptapanteles flavicoxis bracovirus
+Cotesia flavipes bracovirus
+Cotesia melanoscela bracovirus
+Cotesia marginiventris bracovirus
+Diolcogaster facetosa bracovirus
+Cardiochiles nigriceps bracovirus
+CnPDV1
+Toxoneuron nigriceps bracovirus
+unclassified Polydnaviridae
+Toxoneuron nigriceps polydnavirus
+Cardiochiles nigriceps polydnavirus
